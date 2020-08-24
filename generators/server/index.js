@@ -3,6 +3,12 @@ const semver = require('semver');
 
 const DEFAULT_JOOQ_VERSION = '3.13.4';
 
+const JOOQ_FAMILY_MAPPING = {
+    postgresql: 'Postgres',
+    mariadb: 'MariaDB',
+    mysql: 'MySQL',
+};
+
 function createGenerator(env) {
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const constants = require(`${env.getPackagePath('jhipster:server')}/generators/generator-constants`);
@@ -46,6 +52,8 @@ function createGenerator(env) {
             if (this.options.jooqCodegen) {
                 this.blueprintConfig.codegen = this.options.jooqCodegen;
             }
+
+            this.constants = this.constants || constants;
         }
 
         get configuring() {
@@ -54,7 +62,7 @@ function createGenerator(env) {
                     this.jooqVersion = this.blueprintConfig.jooqVersion;
                     if (this.jooqVersion === undefined) {
                         // Match jooq version with spring-boot provided one.
-                        if ((this.constants || constants).SPRING_BOOT_VERSION.includes('2.2.9')) {
+                        if (this.constants.SPRING_BOOT_VERSION.includes('2.2.9')) {
                             this.jooqVersion = '3.12.4';
                         } else {
                             this.jooqVersion = DEFAULT_JOOQ_VERSION;
@@ -80,6 +88,7 @@ function createGenerator(env) {
             return {
                 prepareForTemplates() {
                     this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
+                    this.jooqDialect = JOOQ_FAMILY_MAPPING[this.jhipsterConfig.prodDatabaseType] || '';
                 },
             };
         }
@@ -87,14 +96,26 @@ function createGenerator(env) {
         get writing() {
             return {
                 writeJooqFiles() {
-                    this.renderTemplates(['README.jooq.md']);
+                    this.renderTemplates(['README.jooq.md.ejs', `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml.ejs`]);
                     if (this.jhipsterConfig.buildTool === 'maven') {
                         this.renderTemplates(['jooq.xml']);
                     }
                 },
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
-                    this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
+                    this.addMavenDependency(
+                        'org.springframework.boot',
+                        'spring-boot-starter-jooq',
+                        `
+            <!-- Exclude to synchronize with jooq-meta-extensions version -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jooq</groupId>
+                    <artifactId>jooq</artifactId>
+                </exclusion>
+            </exclusions>
+`
+                    );
                     this.addMavenProperty('jooq.version', this.jooqVersion);
                     this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
                     if (this.blueprintConfig.codegen === 'liquibase') {
@@ -127,9 +148,29 @@ function createGenerator(env) {
             };
         }
 
+        get end() {
+            return {
+                jooqEnd() {
+                    let applicationYmlFile;
+                    if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
+                        applicationYmlFile = 'application.yml';
+                    } else {
+                        applicationYmlFile = 'application-prod.yml';
+                    }
+                    const destinationYml = `${this.constants.SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
+                    this.info(`If you want to enable JOOQ dialects append to ${destinationYml}:
+spring:
+  profiles:
+    includes: jooq
+`);
+                },
+            };
+        }
+
         _templateData() {
             return {
                 jooqTargetName: this.jooqTargetName,
+                jooqDialect: this.jooqDialect,
                 codegen: this.blueprintConfig.codegen,
             };
         }
