@@ -25,6 +25,9 @@ function createGenerator(env) {
 
         get writing() {
             return {
+                writeFiles() {
+                    this.renderTemplates(['README.jooq.md']);
+                },
                 addJooqDependency() {
                     this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
                 },
