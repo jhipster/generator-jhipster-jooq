@@ -21,15 +21,60 @@ function createGenerator(env) {
             }
 
             this.configOptions = jhContext.configOptions || {};
+
+            if (!this.blueprintStorage) {
+                this.blueprintStorage = this._getStorage();
+                this.blueprintConfig = this.blueprintStorage.createProxy();
+            }
         }
 
+        get configuring() {
+            return {
+                configureJooq() {
+                    if (this.blueprintConfig.codeGenerator === undefined) {
+                        this.blueprintConfig.codeGenerator = 'liquibase';
+                    }
+                },
+            };
+        }
         get writing() {
             return {
-                writeFiles() {
+                writeJooqFiles() {
                     this.renderTemplates(['README.jooq.md']);
+                    if (this.jhipsterConfig.buildTool === 'maven') {
+                        this.renderTemplates(['jooq.xml']);
+                    }
                 },
-                addJooqDependency() {
+                injectJooqMavenConfigurations() {
+                    if (this.jhipsterConfig.buildTool !== 'maven') return;
                     this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
+                    this.addMavenProperty('jooq-meta-extensions.version', '3.12.4');
+                    this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
+                    if (this.blueprintConfig.codeGenerator === 'liquibase') {
+                        this.addMavenDependency(
+                            'org.jooq',
+                            'jooq-meta-extensions',
+                            '${jooq-meta-extensions.version}',
+                            '            <scope>compile</scope>'
+                        );
+                        this.addMavenPluginManagement(
+                            'org.jooq',
+                            'jooq-codegen-maven',
+                            undefined,
+                            `                <configuration>
+                        <configurationFile>jooq.xml</configurationFile>
+                </configuration>
+                    <executions>
+                        <execution>
+                            <id>jooq-codegen</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>`
+                        );
+                    }
                 },
             };
         }
