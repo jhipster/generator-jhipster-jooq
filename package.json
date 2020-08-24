@@ -22,7 +22,8 @@
         "url": "git+https://github.com/mshima/generator-jhipster-jooq.git"
     },
     "dependencies": {
-        "chalk": "^4.1.0"
+        "chalk": "4.1.0",
+        "semver": "7.3.2"
     },
     "peerDependencies": {
         "generator-jhipster": ">=6.10.0"
