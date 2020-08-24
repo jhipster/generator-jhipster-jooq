@@ -3,7 +3,7 @@ const helpers = require('yeoman-test');
 
 describe('jhipster-jooq:server sub-generator (Server blueprint)', function () {
     this.timeout(30000);
-    describe('Sample test', () => {
+    describe('with maven', () => {
         let runResult;
         before(() => {
             return helpers
@@ -25,7 +25,11 @@ describe('jhipster-jooq:server sub-generator (Server blueprint)', function () {
             runResult.assertFile('README.jooq.md');
         });
 
-        it('adds jooq', () => {
+        it('writes jooq.xml', () => {
+            runResult.assertFile('jooq.xml');
+        });
+
+        it('adds jooq dependency and executions to pom.xml', () => {
             runResult.assertFileContent('pom.xml', 'spring-boot-starter-jooq');
         });
     });
