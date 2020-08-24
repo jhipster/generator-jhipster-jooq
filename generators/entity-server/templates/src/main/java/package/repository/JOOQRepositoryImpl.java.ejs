@@ -1,0 +1,19 @@
+package <%= packageName %>.repository;
+
+import org.jooq.DSLContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import <%= jooqTargetName %>.tables.<%= jooqGeneratedClassName %>;
+
+@Component
+public class <%= entityClass %>JOOQRepositoryImpl implements <%= entityClass %>JOOQRepository {
+
+    @Autowired
+    private DSLContext dslContext;
+
+    public int count<%= entityClass %>() {
+        return dslContext.fetchCount(<%= jooqGeneratedClassName %>.<%= jooqGeneratedEntityReference %>);
+    }
+ }
+ 
