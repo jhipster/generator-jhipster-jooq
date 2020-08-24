@@ -1,9 +1,11 @@
 const chalk = require('chalk');
 const semver = require('semver');
 
+const DEFAULT_JOOQ_VERSION = '3.13.4';
+
 function createGenerator(env) {
     // eslint-disable-next-line import/no-dynamic-require, global-require
-    const constants = require(`${env.getPackagePath('jhipster:entity-server')}/generators/generator-constants`);
+    const constants = require(`${env.getPackagePath('jhipster:server')}/generators/generator-constants`);
     return class extends env.requireGenerator('jhipster:server') {
         constructor(args, opts) {
             super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
@@ -51,10 +53,11 @@ function createGenerator(env) {
                 configureJooq() {
                     this.jooqVersion = this.blueprintConfig.jooqVersion;
                     if (this.jooqVersion === undefined) {
+                        // Match jooq version with spring-boot provided one.
                         if ((this.constants || constants).SPRING_BOOT_VERSION.includes('2.2.9')) {
                             this.jooqVersion = '3.12.4';
                         } else {
-                            this.jooqVersion = '3.13.4';
+                            this.jooqVersion = DEFAULT_JOOQ_VERSION;
                         }
                     }
                     if (this.blueprintConfig.codegen === undefined) {
@@ -63,7 +66,20 @@ function createGenerator(env) {
                         } else {
                             this.blueprintConfig.codegen = 'liquibase';
                         }
+                    } else if (this.blueprintConfig.codegen === 'liquibase' && semver.lt(this.jooqVersion, '3.13.0')) {
+                        this.warning(
+                            `JOOQ version ${this.jooqVersion} doesn't supports liquibase, using version ${DEFAULT_JOOQ_VERSION} instead.`
+                        );
+                        this.jooqVersion = this.blueprintConfig.jooqVersion = DEFAULT_JOOQ_VERSION;
                     }
+                },
+            };
+        }
+
+        get default() {
+            return {
+                prepareForTemplates() {
+                    this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
                 },
             };
         }
@@ -79,22 +95,23 @@ function createGenerator(env) {
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
                     this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
-                    this.addMavenProperty('jooq-meta-extensions.version', this.jooqVersion);
+                    this.addMavenProperty('jooq.version', this.jooqVersion);
                     this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
                     if (this.blueprintConfig.codegen === 'liquibase') {
-                        this.addMavenDependency(
-                            'org.jooq',
-                            'jooq-meta-extensions',
-                            '${jooq-meta-extensions.version}', // eslint-disable-line no-template-curly-in-string
-                            '            <scope>compile</scope>'
-                        );
+                        // eslint-disable-next-line no-template-curly-in-string
+                        const jooqVersion = '${jooq.version}';
+                        this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion, '            <scope>compile</scope>');
+
+                        // Match jooq version to meta-extensions
+                        this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
+
                         this.addMavenPluginManagement(
                             'org.jooq',
                             'jooq-codegen-maven',
                             undefined,
-                            `                <configuration>
+                            `                    <configuration>
                         <configurationFile>jooq.xml</configurationFile>
-                </configuration>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>jooq-codegen</id>
@@ -107,6 +124,13 @@ function createGenerator(env) {
                         );
                     }
                 },
+            };
+        }
+
+        _templateData() {
+            return {
+                jooqTargetName: this.jooqTargetName,
+                codegen: this.blueprintConfig.codegen,
             };
         }
     };

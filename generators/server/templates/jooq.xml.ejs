@@ -1,13 +1,16 @@
 <configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd">
   <generator>
+    <target>
+      <packageName><%= jooqTargetName %></packageName>
+    </target>
     <database>
-<%_ if (this.blueprintConfig.codegen === 'liquibase') { _%>
+<%_ if (codegen === 'liquibase') { _%>
       <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
-<%_ } else if (this.blueprintConfig.codegen === 'jpa') { _%>
+<%_ } else if (codegen === 'jpa') { _%>
       <name>org.jooq.meta.extensions.jpa.JPADatabase</name>
 <%_ } _%>
       <properties>
-<%_ if (this.blueprintConfig.codegen === 'liquibase') { _%>
+<%_ if (codegen === 'liquibase') { _%>
         <!-- Specify the location of your XML script. -->
         <property>
           <key>scripts</key>
@@ -30,7 +33,7 @@
           <key>changeLogParameters.contexts</key>
           <value>!test and !faker</value>
         </property>
-<%_ } else if (this.blueprintConfig.codegen === 'jpa') { _%>
+<%_ } else if (codegen === 'jpa') { _%>
         <property>
           <key>packages</key>
           <value><%= this.jhipsterConfig.packageName %>.domain</value>
