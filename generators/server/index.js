@@ -103,28 +103,33 @@ function createGenerator(env) {
                 },
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
-                    this.addMavenDependency(
+                    const jooqVersion = '${jooq.version}';
+                    this.addMavenProperty('jooq.version', this.jooqVersion);
+                    this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
+                    this.addMavenDependency('org.jooq', 'jooq');
+
+                    // Match jooq version.
+                    this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
+                    this.addMavenDependencyManagement(
                         'org.springframework.boot',
                         'spring-boot-starter-jooq',
-                        `
-            <!-- Exclude to synchronize with jooq-meta-extensions version -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jooq</groupId>
-                    <artifactId>jooq</artifactId>
-                </exclusion>
-            </exclusions>
-`
+                        undefined,
+                        undefined,
+                        undefined,
+                        `                <!-- Exclude to synchronize with jooq-meta-extensions version -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq</artifactId>
+                    </exclusion>
+                </exclusions>`
                     );
-                    this.addMavenProperty('jooq.version', this.jooqVersion);
-                    this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
-                    if (this.blueprintConfig.codegen === 'liquibase') {
-                        // eslint-disable-next-line no-template-curly-in-string
-                        const jooqVersion = '${jooq.version}';
-                        this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion, '            <scope>compile</scope>');
 
-                        // Match jooq version to meta-extensions
-                        this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
+                    if (this.blueprintConfig.codegen !== undefined) {
+                        // eslint-disable-next-line no-template-curly-in-string
+                        this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
+
+                        this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
 
                         this.addMavenPluginManagement(
                             'org.jooq',
