@@ -1,13 +1,19 @@
-/* eslint-disable consistent-return */
 const chalk = require('chalk');
+const semver = require('semver');
 
 function createGenerator(env) {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const constants = require(`${env.getPackagePath('jhipster:entity-server')}/generators/generator-constants`);
     return class extends env.requireGenerator('jhipster:server') {
         constructor(args, opts) {
             super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 
             this.sbsBlueprint = true;
 
+            this.option('jooq-version', {
+                desc: 'Use JOOQ version',
+                type: String,
+            });
             this.option('jooq-codegen', {
                 desc: 'Use JOOQ code generator (liquibase, jpa)',
                 type: String,
@@ -32,6 +38,9 @@ function createGenerator(env) {
                 this.blueprintConfig = this.blueprintStorage.createProxy();
             }
 
+            if (this.options.jooqVersion) {
+                this.blueprintConfig.jooqVersion = this.options.jooqVersion;
+            }
             if (this.options.jooqCodegen) {
                 this.blueprintConfig.codegen = this.options.jooqCodegen;
             }
@@ -40,8 +49,20 @@ function createGenerator(env) {
         get configuring() {
             return {
                 configureJooq() {
+                    this.jooqVersion = this.blueprintConfig.jooqVersion;
+                    if (this.jooqVersion === undefined) {
+                        if ((this.constants || constants).SPRING_BOOT_VERSION.includes('2.2.9')) {
+                            this.jooqVersion = '3.12.4';
+                        } else {
+                            this.jooqVersion = '3.13.4';
+                        }
+                    }
                     if (this.blueprintConfig.codegen === undefined) {
-                        this.blueprintConfig.codegen = 'liquibase';
+                        if (semver.lt(this.jooqVersion, '3.13.0')) {
+                            this.blueprintConfig.codegen = 'jpa';
+                        } else {
+                            this.blueprintConfig.codegen = 'liquibase';
+                        }
                     }
                 },
             };
@@ -58,7 +79,7 @@ function createGenerator(env) {
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
                     this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
-                    this.addMavenProperty('jooq-meta-extensions.version', '3.12.4');
+                    this.addMavenProperty('jooq-meta-extensions.version', this.jooqVersion);
                     this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
                     if (this.blueprintConfig.codegen === 'liquibase') {
                         this.addMavenDependency(
