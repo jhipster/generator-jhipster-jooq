@@ -8,6 +8,11 @@ function createGenerator(env) {
 
             this.sbsBlueprint = true;
 
+            this.option('jooq-codegen', {
+                desc: 'Use JOOQ code generator (liquibase, jpa)',
+                type: String,
+            });
+
             if (this.options.help) return;
 
             const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
@@ -26,17 +31,22 @@ function createGenerator(env) {
                 this.blueprintStorage = this._getStorage();
                 this.blueprintConfig = this.blueprintStorage.createProxy();
             }
+
+            if (this.options.jooqCodegen) {
+                this.blueprintConfig.codegen = this.options.jooqCodegen;
+            }
         }
 
         get configuring() {
             return {
                 configureJooq() {
-                    if (this.blueprintConfig.codeGenerator === undefined) {
-                        this.blueprintConfig.codeGenerator = 'liquibase';
+                    if (this.blueprintConfig.codegen === undefined) {
+                        this.blueprintConfig.codegen = 'liquibase';
                     }
                 },
             };
         }
+
         get writing() {
             return {
                 writeJooqFiles() {
@@ -50,11 +60,11 @@ function createGenerator(env) {
                     this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
                     this.addMavenProperty('jooq-meta-extensions.version', '3.12.4');
                     this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
-                    if (this.blueprintConfig.codeGenerator === 'liquibase') {
+                    if (this.blueprintConfig.codegen === 'liquibase') {
                         this.addMavenDependency(
                             'org.jooq',
                             'jooq-meta-extensions',
-                            '${jooq-meta-extensions.version}',
+                            '${jooq-meta-extensions.version}', // eslint-disable-line no-template-curly-in-string
                             '            <scope>compile</scope>'
                         );
                         this.addMavenPluginManagement(
