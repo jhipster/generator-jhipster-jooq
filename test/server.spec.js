@@ -21,6 +21,10 @@ describe('jhipster-jooq:server sub-generator (Server blueprint)', function () {
                 });
         });
 
+        it('writes README', () => {
+            runResult.assertFile('README.jooq.md');
+        });
+
         it('adds jooq', () => {
             runResult.assertFileContent('pom.xml', 'spring-boot-starter-jooq');
         });
