@@ -132,7 +132,7 @@ function createGenerator(env) {
                         this.addMavenPluginManagement(
                             'org.jooq',
                             'jooq-codegen-maven',
-                            undefined,
+                            jooqVersion,
                             `                    <configuration>
                         <configurationFile>jooq.xml</configurationFile>
                     </configuration>
