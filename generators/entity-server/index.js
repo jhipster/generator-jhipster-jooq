@@ -23,9 +23,9 @@ function createGenerator(env) {
 
             this.configOptions = jhContext.configOptions || {};
 
+            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
             this.blueprintConfig = this._getStorage().createProxy();
             this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
-
             this.constants = this.constants || constants;
         }
 
@@ -54,6 +54,7 @@ function createGenerator(env) {
             };
         }
 
+        /* Custom data to be passed to templates */
         _templateData() {
             return {
                 jooqTargetName: this.jooqTargetName,

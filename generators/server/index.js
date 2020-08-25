@@ -41,8 +41,10 @@ function createGenerator(env) {
 
             this.configOptions = jhContext.configOptions || {};
 
+            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
             this.blueprintConfig = this._getStorage().createProxy();
             this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
+            this.constants = this.constants || constants;
 
             if (this.options.jooqVersion) {
                 this.blueprintConfig.jooqVersion = this.options.jooqVersion;
@@ -50,8 +52,6 @@ function createGenerator(env) {
             if (this.options.jooqCodegen) {
                 this.blueprintConfig.codegen = this.options.jooqCodegen;
             }
-
-            this.constants = this.constants || constants;
         }
 
         get configuring() {
@@ -170,6 +170,7 @@ spring:
             };
         }
 
+        /* Custom data to be passed to templates */
         _templateData() {
             return {
                 jooqTargetName: this.jooqTargetName,
