@@ -1,8 +1,11 @@
 # generator-jhipster-jooq
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-
 > JHipster blueprint, JOOQ blueprint for JHipster
+
+[![NPM version][npm-image]][npm-url]
+[![Generator](https://github.com/mshima/generator-jhipster-jooq/workflows/Generator/badge.svg)](https://github.com/mshima/generator-jhipster-tenantview/actions?query=workflow%3A%22Generator%22)
+[![Integration Test](https://github.com/mshima/generator-jhipster-jooq/workflows/Integration%20Test/badge.svg)](https://github.com/mshima/generator-jhipster-tenantview/actions?query=workflow%3A%22Integration+Test%22)
+[![Dependency Status][daviddm-image]][daviddm-url]
 
 # Introduction
 
