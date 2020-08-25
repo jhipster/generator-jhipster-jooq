@@ -45,7 +45,7 @@ env:
     FORCE_COLOR: 1
 jobs:
     applications:
-        name: JOOQ (${{ matrix.app-type }}, ${{ matrix.jooq-codegen }}, ${{ matrix.generator-jhipster }})
+        name: jOOQ (${{ matrix.app-type }}, ${{ matrix.jooq-codegen }}, ${{ matrix.generator-jhipster }})
         runs-on: ${{ matrix.os }}
         defaults:
             run:
@@ -160,7 +160,7 @@ jobs:
             - name: Folder information
               run: ls -la
 
-            - name: JOOQ config
+            - name: jOOQ config
               run: cat jooq.xml
 
             #----------------------------------------------------------------------

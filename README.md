@@ -1,6 +1,6 @@
 # generator-jhipster-jooq
 
-> JHipster blueprint, JOOQ blueprint for JHipster
+> JHipster blueprint, jOOQ blueprint for JHipster
 
 [![NPM version][npm-image]][npm-url]
 [![Generator][github-generator-image]][github-generator-url]
