@@ -28,7 +28,6 @@
         "generator-jhipster": ">=6.10.0"
     },
     "devDependencies": {
-        "chai": "4.2.0",
         "ejs-lint": "1.1.0",
         "eslint": "7.7.0",
         "eslint-config-airbnb-base": "14.2.0",
@@ -38,7 +37,6 @@
         "generator-jhipster": "github:jhipster/generator-jhipster#master",
         "mocha": "8.1.1",
         "prettier": "2.0.5",
-        "sinon": "9.0.3",
         "yeoman-test": "3.0.0"
     },
     "scripts": {
