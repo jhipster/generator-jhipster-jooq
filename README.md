@@ -27,7 +27,7 @@ jhipster --blueprints jooq
 
 ## Pre-release
 
-To use a git version, install it using git.
+To use an unreleased version, install it using git.
 
 ```bash
 npm install -g jhipster/generator-jhipster-jooq#master
