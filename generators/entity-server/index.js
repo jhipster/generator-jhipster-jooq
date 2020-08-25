@@ -32,8 +32,9 @@ function createGenerator(env) {
         get default() {
             return {
                 loadConfig() {
-                    this.jooqGeneratedClassName = this.context.entityClass;
-                    this.jooqGeneratedEntityReference = this._.snakeCase(this.context.entityClass).toUpperCase();
+                    const { upperFirst, camelCase } = this._;
+                    this.jooqGeneratedClassName = upperFirst(camelCase(this.context.entityTableName));
+                    this.jooqGeneratedEntityReference = this.context.entityTableName.toUpperCase();
                     this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
                 },
             };
