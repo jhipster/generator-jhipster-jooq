@@ -23,10 +23,8 @@ function createGenerator(env) {
 
             this.configOptions = jhContext.configOptions || {};
 
-            if (!this.blueprintStorage) {
-                this.blueprintStorage = this._getStorage();
-                this.blueprintConfig = this.blueprintStorage.createProxy();
-            }
+            this.blueprintConfig = this._getStorage().createProxy();
+            this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
 
             this.constants = this.constants || constants;
         }

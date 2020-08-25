@@ -41,10 +41,8 @@ function createGenerator(env) {
 
             this.configOptions = jhContext.configOptions || {};
 
-            if (!this.blueprintStorage) {
-                this.blueprintStorage = this._getStorage();
-                this.blueprintConfig = this.blueprintStorage.createProxy();
-            }
+            this.blueprintConfig = this._getStorage().createProxy();
+            this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
 
             if (this.options.jooqVersion) {
                 this.blueprintConfig.jooqVersion = this.options.jooqVersion;
