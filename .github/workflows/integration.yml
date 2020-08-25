@@ -65,7 +65,7 @@ jobs:
                 node_version: [12.16.1]
                 os: [ubuntu-latest]
                 generator-jhipster: [generator-jhipster@6.10.1, jhipster/generator-jhipster#master]
-                jooq-codegen: [liquibase, jpa]
+                jooq-codegen: [liquibase]
                 app-type:
                     - maven-postgres
                 include:
