@@ -78,6 +78,7 @@ function createGenerator(env) {
                         );
                         this.jooqVersion = this.blueprintConfig.jooqVersion = DEFAULT_JOOQ_VERSION;
                     }
+                    this.info(`Using JOOQ version ${this.jooqVersion} with ${this.blueprintConfig.codegen} code generator.`);
                 },
             };
         }
