@@ -17,27 +17,20 @@ As this is a [JHipster](https://www.jhipster.tech/) blueprint, we expect you hav
 
 -   [Installing JHipster](https://www.jhipster.tech/installation/)
 
-# Installation
-
-## With NPM
-
-To install this blueprint:
-
-```bash
-npm install -g generator-jhipster-jooq
-```
-
-To update this blueprint:
-
-```bash
-npm update -g generator-jhipster-jooq
-```
-
 # Usage
 
 To use this blueprint, run the below command
 
 ```bash
+jhipster --blueprints jooq
+```
+
+## Pre-release
+
+To use this blueprint, run the below command
+
+```bash
+npm install -g jhipster/generator-jhipster-jooq#master
 jhipster --blueprints jooq
 ```
 
