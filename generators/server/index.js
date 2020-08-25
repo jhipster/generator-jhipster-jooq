@@ -104,25 +104,22 @@ function createGenerator(env) {
                     // eslint-disable-next-line no-template-curly-in-string
                     const jooqVersion = '${jooq.version}';
                     this.addMavenProperty('jooq.version', this.jooqVersion);
-                    this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
+                    this.addMavenDependency(
+                        'org.springframework.boot',
+                        'spring-boot-starter-jooq',
+                        undefined,
+                        `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
+             <exclusions>
+                <exclusion>
+                    <groupId>org.jooq</groupId>
+                    <artifactId>jooq</artifactId>
+                </exclusion>
+            </exclusions>`
+                    );
                     this.addMavenDependency('org.jooq', 'jooq');
 
                     // Match jooq version.
                     this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
-                    this.addMavenDependencyManagement(
-                        'org.springframework.boot',
-                        'spring-boot-starter-jooq',
-                        undefined,
-                        undefined,
-                        undefined,
-                        `                <!-- Exclude to synchronize with jooq-meta-extensions version -->
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jooq</groupId>
-                        <artifactId>jooq</artifactId>
-                    </exclusion>
-                </exclusions>`
-                    );
 
                     if (this.blueprintConfig.codegen !== undefined) {
                         this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
