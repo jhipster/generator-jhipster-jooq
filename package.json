@@ -3,14 +3,13 @@
     "version": "0.0.0",
     "description": "JOOQ blueprint for JHipster",
     "keywords": [
-        "yeoman-generator",
         "jhipster-blueprint",
-        "jhipster-5"
+        "jhipster-6",
+        "jhipster-7"
     ],
-    "homepage": "https://github.com/mshima/generator-jhipster-jooq",
+    "homepage": "https://github.com/jhipster/generator-jhipster-jooq",
     "author": {
         "name": "Marcelo Shima",
-        "email": "marceloshima@gmail.com",
         "url": "https://github.com/mshima"
     },
     "files": [
@@ -19,7 +18,7 @@
     "main": "generators/app/index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mshima/generator-jhipster-jooq.git"
+        "url": "git+https://github.com/jhipster/generator-jhipster-jooq.git"
     },
     "dependencies": {
         "chalk": "4.1.0",
@@ -43,13 +42,12 @@
         "yeoman-test": "3.0.0"
     },
     "scripts": {
-        "lint": "eslint .",
-        "lint-fix": "npm run lint -- --fix",
-        "pretest": "npm run lint",
+        "fix": "prettier . --write && eslint . --fix",
+        "pretest": "prettier . --check && eslint . && ejslint generators/**/*.ejs",
         "test": "mocha"
     },
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/mshima/generator-jhipster-jooq/issues"
+        "url": "https://github.com/jhipster/generator-jhipster-jooq/issues"
     }
 }
