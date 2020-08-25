@@ -59,12 +59,7 @@ function createGenerator(env) {
                 configureJooq() {
                     this.jooqVersion = this.blueprintConfig.jooqVersion;
                     if (this.jooqVersion === undefined) {
-                        // Match jooq version with spring-boot provided one.
-                        if (this.constants.SPRING_BOOT_VERSION.includes('2.2.9')) {
-                            this.jooqVersion = '3.12.4';
-                        } else {
-                            this.jooqVersion = DEFAULT_JOOQ_VERSION;
-                        }
+                        this.jooqVersion = DEFAULT_JOOQ_VERSION;
                     }
                     if (this.blueprintConfig.codegen === undefined) {
                         if (semver.lt(this.jooqVersion, '3.13.0')) {
