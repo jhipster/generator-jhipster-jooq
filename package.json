@@ -1,7 +1,7 @@
 {
     "name": "generator-jhipster-jooq",
     "version": "0.0.0",
-    "description": "JOOQ blueprint for JHipster",
+    "description": "jOOQ blueprint for JHipster",
     "keywords": [
         "jhipster-blueprint",
         "jhipster-6",

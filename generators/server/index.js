@@ -19,11 +19,11 @@ function createGenerator(env) {
             this.sbsBlueprint = true;
 
             this.option('jooq-version', {
-                desc: 'Use JOOQ version',
+                desc: 'Use jOOQ version',
                 type: String,
             });
             this.option('jooq-codegen', {
-                desc: 'Use JOOQ code generator (liquibase, jpa)',
+                desc: 'Use jOOQ code generator (liquibase, jpa)',
                 type: String,
             });
 
@@ -74,11 +74,11 @@ function createGenerator(env) {
                         }
                     } else if (this.blueprintConfig.codegen === 'liquibase' && semver.lt(this.jooqVersion, '3.13.0')) {
                         this.warning(
-                            `JOOQ version ${this.jooqVersion} doesn't supports liquibase, using version ${DEFAULT_JOOQ_VERSION} instead.`
+                            `jOOQ version ${this.jooqVersion} doesn't supports liquibase, using version ${DEFAULT_JOOQ_VERSION} instead.`
                         );
                         this.jooqVersion = this.blueprintConfig.jooqVersion = DEFAULT_JOOQ_VERSION;
                     }
-                    this.info(`Using JOOQ version ${this.jooqVersion} with ${this.blueprintConfig.codegen} code generator.`);
+                    this.info(`Using jOOQ version ${this.jooqVersion} with ${this.blueprintConfig.codegen} code generator.`);
                 },
             };
         }
@@ -159,7 +159,7 @@ function createGenerator(env) {
                         applicationYmlFile = 'application-prod.yml';
                     }
                     const destinationYml = `${this.constants.SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
-                    this.info(`If you want to enable JOOQ dialects append to ${destinationYml}:
+                    this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
 spring:
   profiles:
     includes: jooq
