@@ -103,6 +103,7 @@ function createGenerator(env) {
                 },
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
+                    // eslint-disable-next-line no-template-curly-in-string
                     const jooqVersion = '${jooq.version}';
                     this.addMavenProperty('jooq.version', this.jooqVersion);
                     this.addMavenDependency('org.springframework.boot', 'spring-boot-starter-jooq');
@@ -126,7 +127,6 @@ function createGenerator(env) {
                     );
 
                     if (this.blueprintConfig.codegen !== undefined) {
-                        // eslint-disable-next-line no-template-curly-in-string
                         this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
 
                         this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
