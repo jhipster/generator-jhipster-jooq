@@ -151,9 +151,10 @@ function createGenerator(env) {
                     if (this.jhipsterConfig.buildTool !== 'gradle') return;
                     this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
                     this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
-                    this.fs.append(
-                        this.destinationPath('build.gradle'),
-                        `
+                    if (this.blueprintConfig.codegen === 'liquibase') {
+                        this.fs.append(
+                            this.destinationPath('build.gradle'),
+                            `
 jooq {
     version = '${this.jooqVersion}'  // the default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
@@ -191,7 +192,50 @@ jooq {
     }
 }
 `
-                    );
+                        );
+                    } else if (this.blueprintConfig.codegen === 'jpa') {
+                        this.fs.append(
+                            this.destinationPath('build.gradle'),
+                            `
+jooq {
+    version = '${this.jooqVersion}'  // the default (can be omitted)
+    edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
+
+    configurations {
+        main {  // name of the jOOQ configuration
+            generationTool {
+                jdbc = null
+                generator {
+                    database {
+                        name = 'org.jooq.meta.extensions.jpa.JPADatabase'
+                        properties {
+                            property {
+                                key = 'packages'
+                                value = '${this.jhipsterConfig.packageName}.domain'
+                            }
+                            property {
+                                key = 'useAttributeConverters'
+                                value = 'true'
+                            }
+                        }
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = false
+                        fluentSetters = true
+                    }
+                    target {
+                        packageName = '${this.jhipsterConfig.packageName}'
+                    }
+                }
+            }
+        }
+    }
+}
+`
+                        );
+                    }
                 },
             };
         }
