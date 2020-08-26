@@ -94,9 +94,13 @@ function createGenerator(env) {
         get writing() {
             return {
                 writeJooqFiles() {
-                    this.renderTemplates(['README.jooq.md.ejs', `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml.ejs`]);
+                    this.renderTemplate('README.jooq.md.ejs', 'README.jooq.md');
+                    this.renderTemplate(
+                        `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml.ejs`,
+                        `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml`
+                    );
                     if (this.jhipsterConfig.buildTool === 'maven') {
-                        this.renderTemplates(['jooq.xml']);
+                        this.renderTemplate('jooq.xml.ejs', 'jooq.xml');
                     }
                 },
 
