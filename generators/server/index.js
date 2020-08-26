@@ -26,6 +26,10 @@ function createGenerator(env) {
                 desc: 'Use jOOQ code generator (liquibase, jpa)',
                 type: String,
             });
+            this.option('jooq-gradle-plugin-version', {
+                desc: 'Gradle plugin version to use',
+                type: String,
+            });
 
             if (this.options.help) return;
 
@@ -95,6 +99,7 @@ function createGenerator(env) {
                         this.renderTemplates(['jooq.xml']);
                     }
                 },
+
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
                     // eslint-disable-next-line no-template-curly-in-string
@@ -141,6 +146,53 @@ function createGenerator(env) {
                         );
                     }
                 },
+
+                injectJooqGradleConfigurations() {
+                    if (this.jhipsterConfig.buildTool !== 'gradle') return;
+                    this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
+                    this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
+                    this.fs.append(
+                        this.destinationPath('build.gradle'),
+                        `
+jooq {
+    version = '${this.jooqVersion}'  // the default (can be omitted)
+    edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
+
+    configurations {
+        main {  // name of the jOOQ configuration
+            generationTool {
+                jdbc = null
+                generator {
+                    database {
+                        name = 'org.jooq.meta.extensions.liquibase.LiquibaseDatabase'
+                        properties {
+                            property {
+                                key = 'scripts'
+                                value = 'src/main/resources/config/liquibase/master.xml'
+                            }
+                            property {
+                                key = 'includeLiquibaseTables'
+                                value = 'false'
+                            }
+                        }
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = false
+                        fluentSetters = true
+                    }
+                    target {
+                        packageName = '${this.jhipsterConfig.packageName}'
+                    }
+                }
+            }
+        }
+    }
+}
+`
+                    );
+                },
             };
         }
 
@@ -166,6 +218,7 @@ spring:
         /* Custom data to be passed to templates */
         _templateData() {
             return {
+                jooqVersion: this.jooqVersion,
                 jooqTargetName: this.jooqTargetName,
                 jooqDialect: this.jooqDialect,
                 codegen: this.blueprintConfig.codegen,
