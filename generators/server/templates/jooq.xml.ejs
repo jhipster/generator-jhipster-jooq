@@ -6,11 +6,7 @@
     <database>
 <%_ if (codegen === 'liquibase') { _%>
       <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
-<%_ } else if (codegen === 'jpa') { _%>
-      <name>org.jooq.meta.extensions.jpa.JPADatabase</name>
-<%_ } _%>
       <properties>
-<%_ if (codegen === 'liquibase') { _%>
         <!-- Specify the location of your XML script. -->
         <property>
           <key>scripts</key>
@@ -34,6 +30,8 @@
           <value>prod</value>
         </property>
 <%_ } else if (codegen === 'jpa') { _%>
+      <name>org.jooq.meta.extensions.jpa.JPADatabase</name>
+      <properties>
         <property>
           <key>packages</key>
           <value><%= this.jhipsterConfig.packageName %>.domain</value>
