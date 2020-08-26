@@ -45,7 +45,7 @@ env:
     FORCE_COLOR: 1
 jobs:
     applications:
-        name: jOOQ (${{ matrix.app-type }}, ${{ matrix.jooq-codegen }}, ${{ matrix.generator-jhipster }})
+        name: jOOQ (${{ matrix.build }}, ${{ matrix.jooq-codegen }}, ${{ matrix.generator-jhipster }})
         runs-on: ${{ matrix.os }}
         defaults:
             run:
@@ -66,16 +66,16 @@ jobs:
                 os: [ubuntu-latest]
                 generator-jhipster: [generator-jhipster@6.10.1, jhipster/generator-jhipster#master]
                 jooq-codegen: [liquibase]
+                build: [maven, gradle]
                 app-type:
-                    - maven-postgres
+                    - app
                 include:
-                    - app-type: maven-postgres
+                    - app-type: app
                       entity: sqlfull
                       profile: prod
                       war: 0
                       protractor: 1
                       testcontainers: 1
-                      additional-parameters: --inline "application { config { prodDatabaseType postgresql } } "
         env:
             JHI_ENTITY: ${{ matrix.entity }}
             JHI_APP: ${{ matrix.app-type }}
@@ -142,7 +142,7 @@ jobs:
                   rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
 
             - name: 'GENERATION: project'
-              run: jhipster jdl --with-entities --no-insight --blueprints scripts,jooq --jooq-version 3.13.4 --jooq-codegen ${{ matrix.jooq-codegen }} ${{ matrix.additional-parameters }}
+              run: jhipster jdl --with-entities --no-insight --blueprints scripts,jooq --jooq-version 3.13.4 --jooq-codegen ${{ matrix.jooq-codegen }} --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
               id: app
 
             #----------------------------------------------------------------------
@@ -159,9 +159,6 @@ jobs:
 
             - name: Folder information
               run: ls -la
-
-            - name: jOOQ config
-              run: cat jooq.xml
 
             #----------------------------------------------------------------------
             # Tests
