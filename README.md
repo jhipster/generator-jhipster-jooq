@@ -36,9 +36,9 @@ jhipster --blueprints jooq
 
 [npm-image]: https://img.shields.io/npm/v/generator-jhipster-jooq.svg
 [npm-url]: https://npmjs.org/package/generator-jhipster-jooq
-[github-generator-image]: https://github.com/mshima/generator-jhipster-jooq/workflows/Generator/badge.svg
-[github-generator-url]: https://github.com/mshima/generator-jhipster-tenantview/actions?query=workflow%3A%22Generator%22
-[github-integration-image]: https://github.com/mshima/generator-jhipster-jooq/workflows/Integration%20Test/badge.svg
-[github-integration-url]: https://github.com/mshima/generator-jhipster-tenantview/actions?query=workflow%3A%22Integration+Test%22
-[daviddm-image]: https://david-dm.org/mshima/generator-jhipster-jooq.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/mshima/generator-jhipster-jooq
+[github-generator-image]: https://github.com/jhipster/generator-jhipster-jooq/workflows/Generator/badge.svg
+[github-generator-url]: https://github.com/jhipster/generator-jhipster-tenantview/actions?query=workflow%3A%22Generator%22
+[github-integration-image]: https://github.com/jhipster/generator-jhipster-jooq/workflows/Integration%20Test/badge.svg
+[github-integration-url]: https://github.com/jhipster/generator-jhipster-tenantview/actions?query=workflow%3A%22Integration+Test%22
+[daviddm-image]: https://david-dm.org/jhipster/generator-jhipster-jooq.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/jhipster/generator-jhipster-jooq
