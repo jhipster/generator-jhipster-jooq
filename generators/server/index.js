@@ -188,6 +188,7 @@ spring:
             this.fs.append(
                 this.destinationPath('build.gradle'),
                 `
+// START OF CONFIGURATION ADDED BY JOOQ BLUEPRINT 
 jooq {
     version = '${this.jooqVersion}'  // the default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
@@ -195,7 +196,6 @@ jooq {
     configurations {
         main {  // name of the jOOQ configuration
             generationTool {
-                jdbc = null
                 generator {
                     database {
                         name = 'org.jooq.meta.extensions.liquibase.LiquibaseDatabase'
@@ -218,6 +218,7 @@ jooq {
         }
     }
 }
+// END OF CONFIGURATION ADDED BY JOOQ BLUEPRINT 
 `
             );
         }
