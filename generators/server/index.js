@@ -174,7 +174,7 @@ spring:
          * Adds dependencies, and required files for gradle
          */
         _addJooqWithGradle() {
-            this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
+            this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.2');
             this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
 
             const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
@@ -205,19 +205,13 @@ jooq {
                                 value = 'src/main/resources/config/liquibase/master.xml'
                             }
                             property {
-                                key = 'includeLiquibaseTables'
-                                value = 'false'
+                                key = 'changeLogParameters.contexts'
+                                value = 'prod'
                             }
                         }
                     }
-                    generate {
-                        deprecated = false
-                        records = true
-                        immutablePojos = false
-                        fluentSetters = true
-                    }
                     target {
-                        packageName = '${this.jhipsterConfig.packageName}'
+                        packageName = '${this.jooqTargetName}'
                     }
                 }
             }
