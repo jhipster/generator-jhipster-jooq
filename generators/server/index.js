@@ -176,6 +176,15 @@ spring:
         _addJooqWithGradle() {
             this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
             this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
+
+            const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
+                '.',
+                'build.gradle',
+                'jhipster-needle-gradle-dependency',
+                'jooqGenerator files("src/main/resources")'
+            );
+            this.needleApi.serverGradle.addBlockContentToFile(rewriteFileModel, 'Error adding jOOQ dependency.');
+
             this.fs.append(
                 this.destinationPath('build.gradle'),
                 `
