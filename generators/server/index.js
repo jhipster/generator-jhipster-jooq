@@ -1,5 +1,4 @@
 const chalk = require('chalk');
-const semver = require('semver');
 
 const DEFAULT_JOOQ_VERSION = '3.13.4';
 
@@ -20,10 +19,6 @@ function createGenerator(env) {
 
             this.option('jooq-version', {
                 desc: 'Use jOOQ version',
-                type: String,
-            });
-            this.option('jooq-codegen', {
-                desc: 'Use jOOQ code generator (liquibase, jpa)',
                 type: String,
             });
             this.option('jooq-gradle-plugin-version', {
@@ -53,9 +48,6 @@ function createGenerator(env) {
             if (this.options.jooqVersion) {
                 this.blueprintConfig.jooqVersion = this.options.jooqVersion;
             }
-            if (this.options.jooqCodegen) {
-                this.blueprintConfig.codegen = this.options.jooqCodegen;
-            }
         }
 
         get configuring() {
@@ -65,19 +57,7 @@ function createGenerator(env) {
                     if (this.jooqVersion === undefined) {
                         this.jooqVersion = DEFAULT_JOOQ_VERSION;
                     }
-                    if (this.blueprintConfig.codegen === undefined) {
-                        if (semver.lt(this.jooqVersion, '3.13.0')) {
-                            this.blueprintConfig.codegen = 'jpa';
-                        } else {
-                            this.blueprintConfig.codegen = 'liquibase';
-                        }
-                    } else if (this.blueprintConfig.codegen === 'liquibase' && semver.lt(this.jooqVersion, '3.13.0')) {
-                        this.warning(
-                            `jOOQ version ${this.jooqVersion} doesn't supports liquibase, using version ${DEFAULT_JOOQ_VERSION} instead.`
-                        );
-                        this.jooqVersion = this.blueprintConfig.jooqVersion = DEFAULT_JOOQ_VERSION;
-                    }
-                    this.info(`Using jOOQ version ${this.jooqVersion} with ${this.blueprintConfig.codegen} code generator.`);
+                    this.info(`Using jOOQ version ${this.jooqVersion}.`);
                 },
             };
         }
@@ -126,16 +106,15 @@ function createGenerator(env) {
                     // Match jooq version.
                     this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
 
-                    if (this.blueprintConfig.codegen !== undefined) {
-                        this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
+                    this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
 
-                        this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
+                    this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
 
-                        this.addMavenPluginManagement(
-                            'org.jooq',
-                            'jooq-codegen-maven',
-                            jooqVersion,
-                            `                    <configuration>
+                    this.addMavenPluginManagement(
+                        'org.jooq',
+                        'jooq-codegen-maven',
+                        jooqVersion,
+                        `                    <configuration>
                         <configurationFile>jooq.xml</configurationFile>
                     </configuration>
                     <executions>
@@ -147,18 +126,16 @@ function createGenerator(env) {
                             </goals>
                         </execution>
                     </executions>`
-                        );
-                    }
+                    );
                 },
 
                 injectJooqGradleConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'gradle') return;
                     this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
                     this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
-                    if (this.blueprintConfig.codegen === 'liquibase') {
-                        this.fs.append(
-                            this.destinationPath('build.gradle'),
-                            `
+                    this.fs.append(
+                        this.destinationPath('build.gradle'),
+                        `
 jooq {
     version = '${this.jooqVersion}'  // the default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
@@ -196,50 +173,7 @@ jooq {
     }
 }
 `
-                        );
-                    } else if (this.blueprintConfig.codegen === 'jpa') {
-                        this.fs.append(
-                            this.destinationPath('build.gradle'),
-                            `
-jooq {
-    version = '${this.jooqVersion}'  // the default (can be omitted)
-    edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
-
-    configurations {
-        main {  // name of the jOOQ configuration
-            generationTool {
-                jdbc = null
-                generator {
-                    database {
-                        name = 'org.jooq.meta.extensions.jpa.JPADatabase'
-                        properties {
-                            property {
-                                key = 'packages'
-                                value = '${this.jhipsterConfig.packageName}.domain'
-                            }
-                            property {
-                                key = 'useAttributeConverters'
-                                value = 'true'
-                            }
-                        }
-                    }
-                    generate {
-                        deprecated = false
-                        records = true
-                        immutablePojos = false
-                        fluentSetters = true
-                    }
-                    target {
-                        packageName = '${this.jhipsterConfig.packageName}'
-                    }
-                }
-            }
-        }
-    }
-}
-`
-                        );
-                    }
+                    );
                 },
             };
         }
@@ -269,7 +203,6 @@ spring:
                 jooqVersion: this.jooqVersion,
                 jooqTargetName: this.jooqTargetName,
                 jooqDialect: this.jooqDialect,
-                codegen: this.blueprintConfig.codegen,
             };
         }
     };
