@@ -41,7 +41,8 @@
     },
     "scripts": {
         "fix": "prettier . --write && eslint . --fix",
-        "pretest": "prettier . --check && eslint . && ejslint generators/**/*.ejs",
+        "ejslint": "ejslint generators/**/*.ejs",
+        "pretest": "prettier . --check && eslint .",
         "test": "mocha"
     },
     "license": "Apache-2.0",
