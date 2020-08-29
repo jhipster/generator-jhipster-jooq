@@ -4,22 +4,12 @@
       <packageName><%= jooqTargetName %></packageName>
     </target>
     <database>
-<%_ if (codegen === 'liquibase') { _%>
       <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
       <properties>
         <!-- Specify the location of your XML script. -->
         <property>
           <key>scripts</key>
           <value>src/main/resources/config/liquibase/master.xml</value>
-        </property>
-
-        <!-- Whether you want to include liquibase tables in generated output
-
-             - false (default)
-             - true: includes DATABASECHANGELOG and DATABASECHANGELOGLOCK tables -->
-        <property>
-          <key>includeLiquibaseTables</key>
-          <value>false</value>
         </property>
 
         <!-- The property "changeLogParameters.contexts" will be passed on to the
@@ -29,22 +19,6 @@
           <key>changeLogParameters.contexts</key>
           <value>prod</value>
         </property>
-<%_ } else if (codegen === 'jpa') { _%>
-      <name>org.jooq.meta.extensions.jpa.JPADatabase</name>
-      <properties>
-        <property>
-          <key>packages</key>
-          <value><%= this.jhipsterConfig.packageName %>.domain</value>
-        </property>
-
-        <!-- Whether JPA 2.1 AttributeConverters should be auto-mapped to jOOQ Converters.
-           Custom <forcedType/> configurations will have a higher priority than these auto-mapped converters.
-           This defaults to true. -->
-        <property>
-          <key>useAttributeConverters</key>
-          <value>true</value>
-        </property>
-<%_ } _%>
       </properties>
     </database>
   </generator>
