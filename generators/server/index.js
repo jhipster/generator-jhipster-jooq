@@ -79,42 +79,83 @@ function createGenerator(env) {
                         `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml.ejs`,
                         `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml`
                     );
-                    if (this.jhipsterConfig.buildTool === 'maven') {
-                        this.renderTemplate('jooq.xml.ejs', 'jooq.xml');
-                    }
                 },
 
                 injectJooqMavenConfigurations() {
                     if (this.jhipsterConfig.buildTool !== 'maven') return;
-                    // eslint-disable-next-line no-template-curly-in-string
-                    const jooqVersion = '${jooq.version}';
-                    this.addMavenProperty('jooq.version', this.jooqVersion);
-                    this.addMavenDependency(
-                        'org.springframework.boot',
-                        'spring-boot-starter-jooq',
-                        undefined,
-                        `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
+                    this._addJooqWithMaven();
+                },
+
+                injectJooqGradleConfigurations() {
+                    if (this.jhipsterConfig.buildTool !== 'gradle') return;
+                    this._addJooqWithGradle();
+                },
+            };
+        }
+
+        get end() {
+            return {
+                jooqEnd() {
+                    let applicationYmlFile;
+                    if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
+                        applicationYmlFile = 'application.yml';
+                    } else {
+                        applicationYmlFile = 'application-prod.yml';
+                    }
+                    const destinationYml = `${this.constants.SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
+                    this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
+spring:
+  profiles:
+    includes: jooq
+`);
+                },
+            };
+        }
+
+        /* Custom data to be passed to templates */
+        _templateData() {
+            return {
+                jooqVersion: this.jooqVersion,
+                jooqTargetName: this.jooqTargetName,
+                jooqDialect: this.jooqDialect,
+            };
+        }
+
+        /**
+         * Adds dependencies, and required files for maven
+         */
+        _addJooqWithMaven() {
+            this.renderTemplate('jooq.xml.ejs', 'jooq.xml');
+
+            // eslint-disable-next-line no-template-curly-in-string
+            const jooqVersion = '${jooq.version}';
+            this.addMavenProperty('jooq.version', this.jooqVersion);
+            this.addMavenDependency(
+                'org.springframework.boot',
+                'spring-boot-starter-jooq',
+                undefined,
+                `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
              <exclusions>
                 <exclusion>
                     <groupId>org.jooq</groupId>
                     <artifactId>jooq</artifactId>
                 </exclusion>
             </exclusions>`
-                    );
-                    this.addMavenDependency('org.jooq', 'jooq');
+            );
+            this.addMavenDependency('org.jooq', 'jooq');
 
-                    // Match jooq version.
-                    this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
+            // Match jooq version.
+            this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
 
-                    this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
+            this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
 
-                    this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
+            this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
 
-                    this.addMavenPluginManagement(
-                        'org.jooq',
-                        'jooq-codegen-maven',
-                        jooqVersion,
-                        `                    <configuration>
+            this.addMavenPluginManagement(
+                'org.jooq',
+                'jooq-codegen-maven',
+                jooqVersion,
+                `                    <configuration>
                         <configurationFile>jooq.xml</configurationFile>
                     </configuration>
                     <executions>
@@ -126,16 +167,18 @@ function createGenerator(env) {
                             </goals>
                         </execution>
                     </executions>`
-                    );
-                },
+            );
+        }
 
-                injectJooqGradleConfigurations() {
-                    if (this.jhipsterConfig.buildTool !== 'gradle') return;
-                    this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
-                    this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
-                    this.fs.append(
-                        this.destinationPath('build.gradle'),
-                        `
+        /**
+         * Adds dependencies, and required files for gradle
+         */
+        _addJooqWithGradle() {
+            this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.1');
+            this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
+            this.fs.append(
+                this.destinationPath('build.gradle'),
+                `
 jooq {
     version = '${this.jooqVersion}'  // the default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
@@ -173,37 +216,7 @@ jooq {
     }
 }
 `
-                    );
-                },
-            };
-        }
-
-        get end() {
-            return {
-                jooqEnd() {
-                    let applicationYmlFile;
-                    if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
-                        applicationYmlFile = 'application.yml';
-                    } else {
-                        applicationYmlFile = 'application-prod.yml';
-                    }
-                    const destinationYml = `${this.constants.SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
-                    this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
-spring:
-  profiles:
-    includes: jooq
-`);
-                },
-            };
-        }
-
-        /* Custom data to be passed to templates */
-        _templateData() {
-            return {
-                jooqVersion: this.jooqVersion,
-                jooqTargetName: this.jooqTargetName,
-                jooqDialect: this.jooqDialect,
-            };
+            );
         }
     };
 }
