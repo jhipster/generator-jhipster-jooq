@@ -25,6 +25,10 @@ function createGenerator(env) {
                 desc: 'Gradle plugin version to use',
                 type: String,
             });
+            this.option('jooq-optional', {
+                desc: 'Make jooq repositories optional',
+                type: Boolean,
+            });
 
             if (this.options.help) return;
 
@@ -47,6 +51,9 @@ function createGenerator(env) {
 
             if (this.options.jooqVersion) {
                 this.blueprintConfig.jooqVersion = this.options.jooqVersion;
+            }
+            if (this.options.jooqOptional !== undefined) {
+                this.blueprintConfig.jooqOptional = this.options.jooqOptional;
             }
         }
 
