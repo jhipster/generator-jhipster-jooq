@@ -30,6 +30,22 @@ function createGenerator(env) {
                 type: Boolean,
             });
 
+            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
+            this.blueprintStorage = this._getStorage();
+
+            // Add jooqOptional to prompt/option.
+            this.registerConfigPrompts({
+                exportOption: {
+                    desc: 'Make jOOQ repositories optional',
+                },
+                when: !this.options.skipPrompts,
+                type: 'confirm',
+                name: 'jooqOptional',
+                message: 'Do you want to make jOOQ repositories optional?',
+                default: false,
+                storage: this.blueprintStorage,
+            });
+
             if (this.options.help) return;
 
             const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
@@ -45,7 +61,7 @@ function createGenerator(env) {
             this.configOptions = jhContext.configOptions || {};
 
             // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
-            this.blueprintConfig = this._getStorage().createProxy();
+            this.blueprintConfig = this.blueprintStorage.createProxy();
             this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
             this.constants = this.constants || constants;
 
