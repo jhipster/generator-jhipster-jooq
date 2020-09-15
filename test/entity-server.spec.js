@@ -1,8 +1,15 @@
-const path = require('path');
 const helpers = require('yeoman-test');
+const { createEnv } = require('./utils');
 
 describe('jhipster-jooq:entity-server sub-generator', function () {
     this.timeout(30000);
+    const helpersCreateEnv = helpers.createEnv;
+    before(() => {
+        helpers.createEnv = createEnv;
+    });
+    after(() => {
+        helpers.createEnv = helpersCreateEnv;
+    });
     describe('default config', () => {
         let runResult;
         before(() => {
@@ -22,7 +29,6 @@ describe('jhipster-jooq:entity-server sub-generator', function () {
                         entities: [{ name: 'Foo' }],
                     },
                 })
-                .withLookups([{ npmPaths: path.join(__dirname, '..', 'node_modules') }, { packagePaths: path.join(__dirname, '..') }])
                 .run()
                 .then(result => {
                     runResult = result;
@@ -56,7 +62,6 @@ describe('jhipster-jooq:entity-server sub-generator', function () {
                         entities: [{ name: 'Foo', jooq: false }],
                     },
                 })
-                .withLookups([{ npmPaths: path.join(__dirname, '..', 'node_modules') }, { packagePaths: path.join(__dirname, '..') }])
                 .run()
                 .then(result => {
                     runResult = result;
