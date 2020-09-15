@@ -14,11 +14,35 @@ function createGenerator(env) {
                 type: Boolean,
             });
 
+            // Entity context
+            this.context = opts.context;
+            this.entityName = this._.upperFirst(this.context.name);
+
+            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
+            this.constants = this.constants || constants;
+
+            this.blueprintConfig = this._getStorage().createProxy();
+            this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
+
+            this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
+            this.entityConfig = this.entityStorage.createProxy();
+
+            // Add jooq to prompt/option.
+            this.registerConfigPrompts({
+                exportOption: {
+                    desc: 'Create jOOQ repository for this entity',
+                },
+                type: 'confirm',
+                when: !this.options.skipPrompts && this.blueprintConfig.jooqOptional,
+                name: 'jooq',
+                message: `Add jOOQ repository for ${this.entityName}?`,
+                default: true,
+                storage: this.entityStorage,
+            });
+
             if (this.options.help) return;
 
-            const jhContext = (this.context = opts.context);
-
-            if (!jhContext) {
+            if (!this.context) {
                 this.error(
                     `This is a JHipster blueprint and should be used only like ${chalk.yellow(
                         'jhipster --blueprint generator-jhipster-jooq'
@@ -26,43 +50,14 @@ function createGenerator(env) {
                 );
             }
 
-            this.configOptions = jhContext.configOptions || {};
-            this.entityName = this._.upperFirst(this.context.name);
-
-            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
-            this.blueprintConfig = this._getStorage().createProxy();
-            this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
-            this.constants = this.constants || constants;
-            this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
-            this.entityConfig = this.entityStorage.createProxy();
-
-            if (this.options.jooq !== undefined) {
-                this.entityConfig.jooq = this.options.jooq;
-            }
-        }
-
-        get prompting() {
-            return {
-                prompt() {
-                    if (this.options.skipPrompts) return undefined;
-                    return this.prompt(
-                        {
-                            when: this.blueprintConfig.jooqOptional,
-                            type: 'confirm',
-                            name: 'jooq',
-                            message: `Add jOOQ repository to ${this.entityName}`,
-                            default: false,
-                        },
-                        this.entityStorage
-                    );
-                },
-            };
+            this.configOptions = opts.configOptions || {};
         }
 
         get configuring() {
             return {
                 configure() {
-                    if (this.entityConfig.jooq === undefined) {
+                    // registerConfigPrompts sets value as null if prompt was skipped.
+                    if (this.entityConfig.jooq === undefined || this.entityConfig.jooq === null) {
                         this.entityConfig.jooq = !this.blueprintConfig.jooqOptional;
                     }
                 },
