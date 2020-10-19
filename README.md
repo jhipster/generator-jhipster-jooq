@@ -30,7 +30,7 @@ jhipster --blueprints jooq
 To use an unreleased version, install it using git.
 
 ```bash
-npm install -g jhipster/generator-jhipster-jooq#master
+npm install -g jhipster/generator-jhipster-jooq#main
 jhipster --blueprints jooq
 ```
 

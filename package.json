@@ -34,7 +34,7 @@
         "eslint-config-prettier": "6.11.0",
         "eslint-plugin-import": "2.22.0",
         "eslint-plugin-prettier": "3.1.4",
-        "generator-jhipster": "github:jhipster/generator-jhipster#master",
+        "generator-jhipster": "github:jhipster/generator-jhipster#main",
         "mocha": "8.1.1",
         "prettier": "2.0.5",
         "yeoman-test": "3.0.0"
