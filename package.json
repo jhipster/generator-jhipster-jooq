@@ -17,8 +17,8 @@
     },
     "license": "Apache-2.0",
     "author": {
-        "name": "Marcelo Shima",
-        "url": "https://github.com/mshima"
+        "name": "JHipster",
+        "url": "https://github.com/jhipster"
     },
     "main": "generators/app/index.js",
     "files": [
