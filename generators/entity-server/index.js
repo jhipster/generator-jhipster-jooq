@@ -33,7 +33,7 @@ function createGenerator(env) {
                     desc: 'Create jOOQ repository for this entity',
                 },
                 type: 'confirm',
-                when: !this.options.skipPrompts && this.blueprintConfig.jooqOptional,
+                when: () => !this.options.skipPrompts && this.blueprintConfig.jooqOptional,
                 name: 'jooq',
                 message: `Add jOOQ repository for ${this.entityName}?`,
                 default: true,
