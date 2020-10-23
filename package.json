@@ -8,24 +8,31 @@
         "jhipster-7"
     ],
     "homepage": "https://github.com/jhipster/generator-jhipster-jooq",
-    "author": {
-        "name": "Marcelo Shima",
-        "url": "https://github.com/mshima"
+    "bugs": {
+        "url": "https://github.com/jhipster/generator-jhipster-jooq/issues"
     },
-    "files": [
-        "generators"
-    ],
-    "main": "generators/app/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/jhipster/generator-jhipster-jooq.git"
     },
+    "license": "Apache-2.0",
+    "author": {
+        "name": "Marcelo Shima",
+        "url": "https://github.com/mshima"
+    },
+    "main": "generators/app/index.js",
+    "files": [
+        "generators"
+    ],
+    "scripts": {
+        "ejslint": "ejslint generators/**/*.ejs",
+        "fix": "prettier . --write && eslint . --fix",
+        "pretest": "prettier . --check && eslint .",
+        "test": "mocha"
+    },
     "dependencies": {
         "chalk": "4.1.0",
         "semver": "7.3.2"
-    },
-    "peerDependencies": {
-        "generator-jhipster": ">=6.10.0"
     },
     "devDependencies": {
         "ejs-lint": "1.1.0",
@@ -39,14 +46,7 @@
         "prettier": "2.0.5",
         "yeoman-test": "3.0.0"
     },
-    "scripts": {
-        "fix": "prettier . --write && eslint . --fix",
-        "ejslint": "ejslint generators/**/*.ejs",
-        "pretest": "prettier . --check && eslint .",
-        "test": "mocha"
-    },
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/jhipster/generator-jhipster-jooq/issues"
+    "peerDependencies": {
+        "generator-jhipster": ">=6.10.0"
     }
 }
