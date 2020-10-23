@@ -47,6 +47,11 @@
         "yeoman-test": "3.0.0"
     },
     "peerDependencies": {
-        "generator-jhipster": ">=6.10.0"
+        "generator-jhipster": "^6.10.0"
+    },
+    "peerDependenciesMeta": {
+        "generator-jhipster": {
+            "optional": true
+        }
     }
 }
