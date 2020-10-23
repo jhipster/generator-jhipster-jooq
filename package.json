@@ -28,7 +28,7 @@
         "ejslint": "ejslint generators/**/*.ejs",
         "fix": "prettier . --write && eslint . --fix",
         "pretest": "prettier . --check && eslint .",
-        "test": "mocha"
+        "test": "mocha --no-insight --forbid-only --parallel"
     },
     "dependencies": {
         "chalk": "4.1.0",
