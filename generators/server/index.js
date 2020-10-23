@@ -17,35 +17,6 @@ function createGenerator(env) {
 
             this.sbsBlueprint = true;
 
-            this.option('jooq-version', {
-                desc: 'Use jOOQ version',
-                type: String,
-            });
-            this.option('jooq-gradle-plugin-version', {
-                desc: 'Gradle plugin version to use',
-                type: String,
-            });
-            this.option('jooq-optional', {
-                desc: 'Make jooq repositories optional',
-                type: Boolean,
-            });
-
-            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
-            this.blueprintStorage = this._getStorage();
-
-            // Add jooqOptional to prompt/option.
-            this.registerConfigPrompts({
-                exportOption: {
-                    desc: 'Make jOOQ repositories optional',
-                },
-                when: !this.options.skipPrompts,
-                type: 'confirm',
-                name: 'jooqOptional',
-                message: 'Do you want to make jOOQ repositories optional?',
-                default: false,
-                storage: this.blueprintStorage,
-            });
-
             if (this.options.help) return;
 
             const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
@@ -58,19 +29,15 @@ function createGenerator(env) {
                 );
             }
 
+            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
+            this.blueprintStorage = this._getStorage();
+
             this.configOptions = jhContext.configOptions || {};
 
             // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
             this.blueprintConfig = this.blueprintStorage.createProxy();
             this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
             this.constants = this.constants || constants;
-
-            if (this.options.jooqVersion) {
-                this.blueprintConfig.jooqVersion = this.options.jooqVersion;
-            }
-            if (this.options.jooqOptional !== undefined) {
-                this.blueprintConfig.jooqOptional = this.options.jooqOptional;
-            }
         }
 
         get configuring() {
@@ -197,7 +164,7 @@ spring:
          * Adds dependencies, and required files for gradle
          */
         _addJooqWithGradle() {
-            this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.options.jooqGradlePluginVersion || '5.0.2');
+            this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.blueprintConfig.jooqGradlePluginVersion || '5.0.2');
             this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
 
             const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
