@@ -31,20 +31,20 @@
         "test": "mocha --no-insight --forbid-only --parallel"
     },
     "dependencies": {
-        "chalk": "4.1.0",
-        "semver": "7.3.2"
+        "chalk": "^4.1.0",
+        "semver": "^7.3.2"
     },
     "devDependencies": {
-        "ejs-lint": "1.1.0",
-        "eslint": "7.7.0",
-        "eslint-config-airbnb-base": "14.2.0",
-        "eslint-config-prettier": "6.11.0",
-        "eslint-plugin-import": "2.22.0",
-        "eslint-plugin-prettier": "3.1.4",
+        "ejs-lint": "^1.1.0",
+        "eslint": "^7.7.0",
+        "eslint-config-airbnb-base": "^14.2.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-prettier": "^3.1.4",
         "generator-jhipster": "github:jhipster/generator-jhipster#main",
-        "mocha": "8.1.1",
-        "prettier": "2.0.5",
-        "yeoman-test": "3.0.0"
+        "mocha": "^8.1.1",
+        "prettier": "^2.0.5",
+        "yeoman-test": "^3.0.0"
     },
     "peerDependencies": {
         "generator-jhipster": "^6.10.0"
