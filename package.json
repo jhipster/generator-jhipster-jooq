@@ -15,6 +15,10 @@
         "type": "git",
         "url": "git+https://github.com/jhipster/generator-jhipster-jooq.git"
     },
+    "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/generator-jhipster"
+    },
     "license": "Apache-2.0",
     "author": {
         "name": "JHipster",
