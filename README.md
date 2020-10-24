@@ -31,7 +31,7 @@ To use an unreleased version, install it using git.
 
 ```bash
 npm install -g jhipster/generator-jhipster-jooq#main
-jhipster --blueprints jooq
+jhipster --blueprints jooq --skip-jhipster-dependencies
 ```
 
 [npm-image]: https://img.shields.io/npm/v/generator-jhipster-jooq.svg
