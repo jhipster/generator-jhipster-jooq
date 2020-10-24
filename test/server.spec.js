@@ -1,20 +1,12 @@
-const helpers = require('yeoman-test');
-const { createEnv } = require('./utils');
+const { createTest } = require('./utils.js');
 
 describe('jhipster-jooq:server sub-generator (Server blueprint)', function () {
     this.timeout(30000);
-    const helpersCreateEnv = helpers.createEnv;
-    before(() => {
-        helpers.createEnv = createEnv;
-    });
-    after(() => {
-        helpers.createEnv = helpersCreateEnv;
-    });
+
     describe('with maven', () => {
         let runResult;
         before(() => {
-            return helpers
-                .create('jhipster:server')
+            return createTest('jhipster:server')
                 .withOptions({
                     fromCli: true,
                     skipInstall: true,
