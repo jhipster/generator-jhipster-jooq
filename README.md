@@ -25,6 +25,20 @@ To use this blueprint, run the below command
 jhipster --blueprints jooq
 ```
 
+You can look for updated jooq blueprint specific options by running
+
+```bash
+jhipster app --blueprints jooq --help
+```
+
+And looking for `(blueprint option: jooq)` like
+
+```
+  --jooq-version <value>                Use jOOQ version (blueprint option: jooq)
+  --jooq-gradle-plugin-version <value>  Gradle plugin version to use (blueprint option: jooq)
+  --jooq-optional                       Make jOOQ repositories optional (blueprint option: jooq)
+```
+
 ## Pre-release
 
 To use an unreleased version, install it using git.
@@ -33,6 +47,20 @@ To use an unreleased version, install it using git.
 npm install -g jhipster/generator-jhipster-jooq#main
 jhipster --blueprints jooq --skip-jhipster-dependencies
 ```
+
+# Features
+
+-   Dependencies are added automatically.
+
+Dependencies are added to your favorite build tool (maven or gradle).
+
+-   Repository interface.
+
+A jOOQ repository interface is created for every (or opt-in/opt-out) entity.
+
+-   Repository implementation.
+
+A jOOQ repository implementation with DSLContext (jOOQ) is created for every (or opt-in/opt-out) entity.
 
 [npm-image]: https://img.shields.io/npm/v/generator-jhipster-jooq.svg
 [npm-url]: https://npmjs.org/package/generator-jhipster-jooq
