@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-const DEFAULT_JOOQ_VERSION = '3.13.4';
+const DEFAULT_JOOQ_VERSION = '3.14.8';
 
 const JOOQ_FAMILY_MAPPING = {
     postgresql: 'Postgres',
@@ -137,7 +137,7 @@ spring:
             // Match jooq version.
             this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
 
-            this.addMavenDependency('org.jooq', 'jooq-meta-extensions', jooqVersion);
+            this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqVersion);
 
             this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
 
