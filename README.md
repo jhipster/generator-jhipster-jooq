@@ -25,6 +25,41 @@ To use this blueprint, run the below command
 jhipster --blueprints jooq
 ```
 
+## Using Docker
+
+Download the Dockerfile:
+
+```bash
+mkdir docker
+cd docker
+wget https://github.com/jhipster/generator-jhipster-jooq/raw/master/docker/Dockerfile
+```
+
+Build the Docker images:
+
+```bash
+docker build -t jhipster-generator-jooq:latest .
+```
+
+Make a folder where you want to generate the Service:
+
+```bash
+mkdir service
+cd service
+```
+
+Run the generator from image to generate service:
+
+```bash
+docker run -it --rm -v $PWD:/home/jhipster/app jhipster-generator-jooq
+```
+
+Run and attach interactive shell to the generator docker container to work from inside the running container:
+
+```bash
+docker run -it --rm -v $PWD:/home/jhipster/app jhipster-generator-jooq /bin/bash
+```
+
 ## Pre-release
 
 To use an unreleased version, install it using git.
