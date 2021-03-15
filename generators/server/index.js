@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 
 const DEFAULT_JOOQ_VERSION = '3.14.8';
+const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '5.2.1';
 
 const JOOQ_FAMILY_MAPPING = {
     postgresql: 'Postgres',
@@ -164,8 +165,11 @@ spring:
          * Adds dependencies, and required files for gradle
          */
         _addJooqWithGradle() {
-            this.addGradlePluginToPluginsBlock('nu.studer.jooq', this.blueprintConfig.jooqGradlePluginVersion || '5.0.2');
-            this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions', this.jooqVersion);
+            this.addGradlePluginToPluginsBlock(
+                'nu.studer.jooq',
+                this.blueprintConfig.jooqGradlePluginVersion || DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION
+            );
+            this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions-liquibase', this.jooqVersion);
 
             const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
                 '.',
