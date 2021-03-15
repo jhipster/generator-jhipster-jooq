@@ -1,12 +1,13 @@
-const { createTest } = require('./utils.js');
+const { helpers } = require('./utils');
 
 describe('jhipster-jooq:entity-server sub-generator', function () {
     this.timeout(30000);
 
     describe('default config', () => {
         let runResult;
-        before(() => {
-            return createTest('jhipster:app')
+        before(async () => {
+            runResult = await helpers
+                .create('jhipster:app')
                 .withOptions({
                     fromCli: true,
                     skipInstall: true,
@@ -21,10 +22,7 @@ describe('jhipster-jooq:entity-server sub-generator', function () {
                         entities: [{ name: 'Foo' }],
                     },
                 })
-                .run()
-                .then(result => {
-                    runResult = result;
-                });
+                .run();
         });
 
         it('should write repository for the entity', () => {
@@ -38,8 +36,9 @@ describe('jhipster-jooq:entity-server sub-generator', function () {
 
     describe('when jooq is disabled at entity level', () => {
         let runResult;
-        before(() => {
-            return createTest('jhipster:app')
+        before(async () => {
+            runResult = await helpers
+                .create('jhipster:app')
                 .withOptions({
                     fromCli: true,
                     skipInstall: true,
@@ -53,10 +52,7 @@ describe('jhipster-jooq:entity-server sub-generator', function () {
                         entities: [{ name: 'Foo', jooq: false }],
                     },
                 })
-                .run()
-                .then(result => {
-                    runResult = result;
-                });
+                .run();
         });
 
         it('should not write repository for the entity', () => {

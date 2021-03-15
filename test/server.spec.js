@@ -1,22 +1,20 @@
-const { createTest } = require('./utils.js');
+const { helpers } = require('./utils');
 
 describe('jhipster-jooq:server sub-generator (Server blueprint)', function () {
     this.timeout(30000);
 
     describe('with maven', () => {
         let runResult;
-        before(() => {
-            return createTest('jhipster:server')
+        before(async () => {
+            runResult = await helpers
+                .create('jhipster:server')
                 .withOptions({
                     fromCli: true,
                     skipInstall: true,
                     defaults: true,
                     blueprints: 'jooq',
                 })
-                .run()
-                .then(result => {
-                    runResult = result;
-                });
+                .run();
         });
 
         it('writes README', () => {
@@ -39,7 +37,7 @@ describe('jhipster-jooq:server sub-generator (Server blueprint)', function () {
             runResult.assertFileContent('pom.xml', '<artifactId>spring-boot-starter-jooq</artifactId>');
             runResult.assertFileContent('pom.xml', '<artifactId>jooq-codegen-maven</artifactId>');
             runResult.assertFileContent('pom.xml', '<artifactId>jooq</artifactId>');
-            runResult.assertFileContent('pom.xml', '<artifactId>jooq-meta-extensions</artifactId>');
+            runResult.assertFileContent('pom.xml', '<artifactId>jooq-meta-extensions-liquibase</artifactId>');
         });
     });
 });
