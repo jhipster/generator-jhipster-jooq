@@ -66,6 +66,7 @@ jobs:
                 os: [ubuntu-latest]
                 generator-jhipster: [generator-jhipster@6.10.1]
                 jooq-codegen: [liquibase]
+                jooq-version: [3.14.8]
                 build: [maven, gradle]
                 app-type:
                     - app
@@ -142,7 +143,7 @@ jobs:
                   rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
 
             - name: 'GENERATION: project'
-              run: jhipster jdl --with-entities --no-insight --blueprints scripts,jooq --jooq-version 3.13.4 --jooq-codegen ${{ matrix.jooq-codegen }} --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
+              run: jhipster jdl --with-entities --no-insight --blueprints scripts,jooq --jooq-version ${{ matrix.jooq-version }} --skip-checks --jooq-codegen ${{ matrix.jooq-codegen }} --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
               id: app
 
             #----------------------------------------------------------------------
