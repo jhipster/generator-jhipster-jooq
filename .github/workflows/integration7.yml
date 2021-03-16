@@ -163,7 +163,7 @@ jobs:
             # Tests
             #----------------------------------------------------------------------
             - name: Start db containers
-              run: npm run ci:test:prepare:docker
+              run: npm run ci:e2e:prepare:docker
 
             - name: Start others containers
               if: ${{ steps.configure.outputs.docker_others == 'true' }}
