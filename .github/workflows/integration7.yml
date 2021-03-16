@@ -208,7 +208,7 @@ jobs:
 
             - name: Upload application archive
               uses: actions/upload-artifact@v2
-              if: ${{ github.event.inputs.storeApplication != '' }}
+              if: always() && github.event.inputs.storeApplication != ''
               with:
-                  name: application.zip
+                  name: jhipster-jooq-${{ matrix.build }}.zip
                   path: archive.zip
