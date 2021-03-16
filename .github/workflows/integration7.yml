@@ -64,7 +64,7 @@ jobs:
             matrix:
                 node_version: [14.16.0]
                 os: [ubuntu-latest]
-                generator-jhipster: [generator-jhipster@6.10.1]
+                generator-jhipster: [jhipster/generator-jhipster#main]
                 jooq-codegen: [liquibase]
                 build: [maven, gradle]
                 app-type:
@@ -128,8 +128,8 @@ jobs:
             # Install JHipster and generate project+entities
             #----------------------------------------------------------------------
 
-            - name: 'GENERATION: install generator-jhipster and generator-jhipster-scripts'
-              run: npm install -g ${{ matrix.generator-jhipster }} generator-jhipster-scripts@^1
+            - name: 'GENERATION: install generator-jhipster'
+              run: npm install -g ${{ matrix.generator-jhipster }}
 
             - name: 'GENERATION: install generator-jhipster-jooq'
               run: npm link
@@ -142,7 +142,7 @@ jobs:
                   rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
 
             - name: 'GENERATION: project'
-              run: jhipster jdl --with-entities --no-insight --blueprints scripts,jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
+              run: jhipster jdl --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
               id: app
 
             #----------------------------------------------------------------------
@@ -150,7 +150,6 @@ jobs:
             #----------------------------------------------------------------------
             - name: Package.json information
               run: |
-                  cat package.json || jhipster workspace --force --blueprints scripts --local-config-only
                   cat package.json || true
                   cat */package.json || true
 
@@ -163,16 +162,12 @@ jobs:
             #----------------------------------------------------------------------
             # Tests
             #----------------------------------------------------------------------
-            - name: Configure github actions
-              run: npm run ci:github:configure
-              id: configure
-
             - name: Start db containers
               run: npm run ci:test:prepare:docker
 
             - name: Start others containers
               if: ${{ steps.configure.outputs.docker_others == 'true' }}
-              run: npm run docker:others
+              run: npm run docker:others:up
 
             - name: Backend info
               if: ${{ steps.app.outcome == 'success' && always() }}
