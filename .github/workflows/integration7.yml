@@ -19,6 +19,12 @@
 
 name: Integration Test JHipster 7
 on:
+    workflow_dispatch:
+        inputs:
+            storeApplication:
+                description: 'Store application'
+                default: ''
+                required: false
     push:
         branches-ignore:
             - 'dependabot/**'
@@ -195,3 +201,14 @@ jobs:
             - name: End-to-End
               if: ${{ steps.configure.outputs.e2e == 'true' && steps.packaging.outcome == 'success' && always() }}
               run: npm run ci:e2e:run
+
+            - name: Create application archive
+              if: ${{ github.event.inputs.storeApplication != '' }}
+              run: git archive HEAD -o archive.zip
+
+            - name: Upload application archive
+              uses: actions/upload-artifact@v2
+              if: ${{ github.event.inputs.storeApplication != '' }}
+              with:
+                  name: application.zip
+                  path: archive.zip
