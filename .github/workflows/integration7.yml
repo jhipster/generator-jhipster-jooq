@@ -211,4 +211,4 @@ jobs:
               if: always() && github.event.inputs.storeApplication != ''
               with:
                   name: jhipster-jooq-${{ matrix.build }}.zip
-                  path: archive.zip
+                  path: app/archive.zip
