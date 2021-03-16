@@ -203,7 +203,7 @@ jobs:
               run: npm run ci:e2e:run
 
             - name: Create application archive
-              if: ${{ github.event.inputs.storeApplication != '' }}
+              if: always() && github.event.inputs.storeApplication != ''
               run: git archive HEAD -o archive.zip
 
             - name: Upload application archive
