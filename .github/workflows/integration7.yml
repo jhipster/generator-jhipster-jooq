@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-name: Integration Test
+name: Integration Test JHipster 7
 on:
     push:
         branches-ignore:

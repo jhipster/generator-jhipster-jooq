@@ -21,11 +21,15 @@ name: Integration Test
 on:
     push:
         branches-ignore:
-            - 'dependabot/**'
-            - 'skip_ci*'
+            - '**'
+        #branches-ignore:
+        #    - 'dependabot/**'
+        #    - 'skip_ci*'
     pull_request:
-        branches:
-            - '*'
+        branches-ignore:
+            - '**'
+        #branches:
+        #    - '*'
 env:
     JHI_RUN_APP: 1
     JHI_JDK: 11
