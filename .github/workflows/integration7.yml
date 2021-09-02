@@ -19,196 +19,196 @@
 
 name: Integration Test JHipster 7
 on:
-    workflow_dispatch:
-        inputs:
-            storeApplication:
-                description: 'Store application'
-                default: ''
-                required: false
-    push:
-        branches-ignore:
-            - 'dependabot/**'
-            - 'skip_ci*'
-    pull_request:
-        branches:
-            - '*'
+  workflow_dispatch:
+    inputs:
+      storeApplication:
+        description: 'Store application'
+        default: ''
+        required: false
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+      - 'skip_ci*'
+  pull_request:
+    branches:
+      - '*'
 env:
-    JHI_RUN_APP: 1
-    JHI_JDK: 11
-    JHI_LIB_REPO: https://github.com/jhipster/jhipster.git
-    JHI_LIB_BRANCH: release
-    JHI_GEN_REPO: https://github.com/jhipster/generator-jhipster.git
-    JHI_GEN_BRANCH: main
-    SPRING_OUTPUT_ANSI_ENABLED: ALWAYS
-    SPRING_JPA_SHOW_SQL: false
-    JHI_DISABLE_WEBPACK_LOGS: true
-    JHI_E2E_HEADLESS: true
-    JHI_INTEG: ${{ github.workspace }}/generator-jhipster/test-integration
-    JHI_SCRIPTS: ${{ github.workspace }}/generator-jhipster/test-integration/scripts
-    JHI_FOLDER_APP: ${{ github.workspace }}/app
-    JHI_GITHUB_CI: true
-    NG_CLI_ANALYTICS: 'false'
-    FORCE_COLOR: 1
+  JHI_RUN_APP: 1
+  JHI_JDK: 11
+  JHI_LIB_REPO: https://github.com/jhipster/jhipster.git
+  JHI_LIB_BRANCH: release
+  JHI_GEN_REPO: https://github.com/jhipster/generator-jhipster.git
+  JHI_GEN_BRANCH: main
+  SPRING_OUTPUT_ANSI_ENABLED: ALWAYS
+  SPRING_JPA_SHOW_SQL: false
+  JHI_DISABLE_WEBPACK_LOGS: true
+  JHI_E2E_HEADLESS: true
+  JHI_INTEG: ${{ github.workspace }}/generator-jhipster/test-integration
+  JHI_SCRIPTS: ${{ github.workspace }}/generator-jhipster/test-integration/scripts
+  JHI_FOLDER_APP: ${{ github.workspace }}/app
+  JHI_GITHUB_CI: true
+  NG_CLI_ANALYTICS: 'false'
+  FORCE_COLOR: 1
 jobs:
-    applications:
-        name: jOOQ (${{ matrix.build }}, ${{ matrix.jooq-codegen }}, ${{ matrix.generator-jhipster }})
-        runs-on: ${{ matrix.os }}
-        defaults:
-            run:
-                working-directory: app
+  applications:
+    name: jOOQ (${{ matrix.build }}, ${{ matrix.jooq-codegen }}, ${{ matrix.generator-jhipster }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: app
 
-        if: >-
-            !contains(github.event.head_commit.message, '[ci skip]') &&
-            !contains(github.event.head_commit.message, '[skip ci]') &&
-            !contains(github.event.pull_request.title, '[skip ci]') &&
-            !contains(github.event.pull_request.title, '[ci skip]') &&
-            (github.event.pull_request.draft == false || !contains(github.event.pull_request.labels.*.name, 'pr: skip-ci')) &&
-            !contains(github.event.pull_request.user.login, 'dependabot')
-        timeout-minutes: 40
-        strategy:
-            fail-fast: false
-            matrix:
-                node_version: [14.16.0]
-                os: [ubuntu-latest]
-                generator-jhipster: [jhipster/generator-jhipster#main]
-                jooq-codegen: [liquibase]
-                build: [maven, gradle]
-                app-type:
-                    - app
-                include:
-                    - app-type: app
-                      entity: sqlfull
-                      profile: prod
-                      war: 0
-                      protractor: 1
-                      testcontainers: 1
-        env:
-            JHI_ENTITY: ${{ matrix.entity }}
-            JHI_APP: ${{ matrix.app-type }}
-            JHI_PROFILE: ${{ matrix.profile }}
-            JHI_WAR: ${{ matrix.war }}
-            JHI_PROTRACTOR: ${{ matrix.protractor }}
-            JHI_TESTCONTAINERS: ${{ matrix.testcontainers }}
-        steps:
-            #----------------------------------------------------------------------
-            # Install all tools and check configuration
-            #----------------------------------------------------------------------
-            - uses: actions/checkout@v2
-              with:
-                  path: generator-jhipster-jooq
+    if: >-
+      !contains(github.event.head_commit.message, '[ci skip]') &&
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      !contains(github.event.pull_request.title, '[skip ci]') &&
+      !contains(github.event.pull_request.title, '[ci skip]') &&
+      (github.event.pull_request.draft == false || !contains(github.event.pull_request.labels.*.name, 'pr: skip-ci')) &&
+      !contains(github.event.pull_request.user.login, 'dependabot')
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        node_version: [14.16.0]
+        os: [ubuntu-latest]
+        generator-jhipster: [jhipster/generator-jhipster#main]
+        jooq-codegen: [liquibase]
+        build: [maven, gradle]
+        app-type:
+          - app
+        include:
+          - app-type: app
+            entity: sqlfull
+            profile: prod
+            war: 0
+            protractor: 1
+            testcontainers: 1
+    env:
+      JHI_ENTITY: ${{ matrix.entity }}
+      JHI_APP: ${{ matrix.app-type }}
+      JHI_PROFILE: ${{ matrix.profile }}
+      JHI_WAR: ${{ matrix.war }}
+      JHI_PROTRACTOR: ${{ matrix.protractor }}
+      JHI_TESTCONTAINERS: ${{ matrix.testcontainers }}
+    steps:
+      #----------------------------------------------------------------------
+      # Install all tools and check configuration
+      #----------------------------------------------------------------------
+      - uses: actions/checkout@v2
+        with:
+          path: generator-jhipster-jooq
 
-            - uses: actions/checkout@v2
-              with:
-                  repository: jhipster/generator-jhipster
-                  path: generator-jhipster
+      - uses: actions/checkout@v2
+        with:
+          repository: jhipster/generator-jhipster
+          path: generator-jhipster
 
-            - name: 'Create app dir'
-              run: mkdir app
-              working-directory: ${{ github.workspace }}
+      - name: 'Create app dir'
+        run: mkdir app
+        working-directory: ${{ github.workspace }}
 
-            - uses: actions/setup-node@v2
-              with:
-                  node-version: ${{ matrix.node_version }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node_version }}
 
-            - uses: actions/setup-java@v1
-              with:
-                  java-version: '11.x'
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11.x'
 
-            - name: Get chrome/chromedriver version
-              id: chromedriver-version
-              run: |
-                  CHROME_VERSION=$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1) \
-                  && CHROMEDRIVER_VERSION=$(curl --location --fail --retry 3 http://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}) \
-                  && echo "::set-output name=version::$CHROMEDRIVER_VERSION"
+      - name: Get chrome/chromedriver version
+        id: chromedriver-version
+        run: |
+          CHROME_VERSION=$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1) \
+          && CHROMEDRIVER_VERSION=$(curl --location --fail --retry 3 http://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}) \
+          && echo "::set-output name=version::$CHROMEDRIVER_VERSION"
 
-            - name: 'TOOLS: display configuration'
-              run: $JHI_SCRIPTS/01-display-configuration.sh
+      - name: 'TOOLS: display configuration'
+        run: $JHI_SCRIPTS/01-display-configuration.sh
 
-            - name: 'TOOLS: configure tools installed by the system'
-              run: $JHI_SCRIPTS/03-system.sh
+      - name: 'TOOLS: configure tools installed by the system'
+        run: $JHI_SCRIPTS/03-system.sh
 
-            - name: 'TOOLS: configure git'
-              run: $JHI_SCRIPTS/04-git-config.sh
+      - name: 'TOOLS: configure git'
+        run: $JHI_SCRIPTS/04-git-config.sh
 
-            #----------------------------------------------------------------------
-            # Install JHipster and generate project+entities
-            #----------------------------------------------------------------------
+      #----------------------------------------------------------------------
+      # Install JHipster and generate project+entities
+      #----------------------------------------------------------------------
 
-            - name: 'GENERATION: install generator-jhipster'
-              run: npm install -g ${{ matrix.generator-jhipster }}
+      - name: 'GENERATION: install generator-jhipster'
+        run: npm install -g ${{ matrix.generator-jhipster }}
 
-            - name: 'GENERATION: install generator-jhipster-jooq'
-              run: npm link
-              working-directory: generator-jhipster-jooq
+      - name: 'GENERATION: install generator-jhipster-jooq'
+        run: npm link
+        working-directory: generator-jhipster-jooq
 
-            - name: 'GENERATION: entities'
-              run: |
-                  $JHI_SCRIPTS/11-generate-entities.sh
-                  ls -la $JHI_FOLDER_APP/.jhipster/
-                  rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
+      - name: 'GENERATION: entities'
+        run: |
+          $JHI_SCRIPTS/11-generate-entities.sh
+          ls -la $JHI_FOLDER_APP/.jhipster/
+          rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
 
-            - name: 'GENERATION: project'
-              run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
-              id: app
+      - name: 'GENERATION: project'
+        run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
+        id: app
 
-            #----------------------------------------------------------------------
-            # Print package.json, if doesn't exist, it's a microservice, create it.
-            #----------------------------------------------------------------------
-            - name: Package.json information
-              run: |
-                  cat package.json || true
-                  cat */package.json || true
+      #----------------------------------------------------------------------
+      # Print package.json, if doesn't exist, it's a microservice, create it.
+      #----------------------------------------------------------------------
+      - name: Package.json information
+        run: |
+          cat package.json || true
+          cat */package.json || true
 
-            - name: Project information
-              run: jhipster info
+      - name: Project information
+        run: jhipster info
 
-            - name: Folder information
-              run: ls -la
+      - name: Folder information
+        run: ls -la
 
-            #----------------------------------------------------------------------
-            # Tests
-            #----------------------------------------------------------------------
-            - name: Start db containers
-              run: npm run ci:e2e:prepare:docker
+      #----------------------------------------------------------------------
+      # Tests
+      #----------------------------------------------------------------------
+      - name: Start db containers
+        run: npm run ci:e2e:prepare:docker
 
-            - name: Start others containers
-              if: ${{ steps.configure.outputs.docker_others == 'true' }}
-              run: npm run docker:others:up
+      - name: Start others containers
+        if: ${{ steps.configure.outputs.docker_others == 'true' }}
+        run: npm run docker:others:up
 
-            - name: Backend info
-              if: ${{ steps.app.outcome == 'success' && always() }}
-              run: npm run backend:info
-              id: backend_info
+      - name: Backend info
+        if: ${{ steps.app.outcome == 'success' && always() }}
+        run: npm run backend:info
+        id: backend_info
 
-            - name: Backend javadoc
-              if: ${{ steps.backend_info.outcome == 'success' && always() }}
-              run: npm run backend:doc:test
+      - name: Backend javadoc
+        if: ${{ steps.backend_info.outcome == 'success' && always() }}
+        run: npm run backend:doc:test
 
-            - name: Backend test
-              if: ${{ steps.backend_info.outcome == 'success' && always() }}
-              run: npm run ci:backend:test
+      - name: Backend test
+        if: ${{ steps.backend_info.outcome == 'success' && always() }}
+        run: npm run ci:backend:test
 
-            - name: E2E Packaging
-              if: ${{ steps.app.outcome == 'success' && always() }}
-              run: npm run ci:e2e:package
-              id: packaging
+      - name: E2E Packaging
+        if: ${{ steps.app.outcome == 'success' && always() }}
+        run: npm run ci:e2e:package
+        id: packaging
 
-            - name: E2E Prepare
-              if: ${{ steps.packaging.outcome == 'success' && always() }}
-              run: npm run ci:e2e:prepare
-              timeout-minutes: 5
+      - name: E2E Prepare
+        if: ${{ steps.packaging.outcome == 'success' && always() }}
+        run: npm run ci:e2e:prepare
+        timeout-minutes: 5
 
-            - name: End-to-End
-              if: ${{ steps.configure.outputs.e2e == 'true' && steps.packaging.outcome == 'success' && always() }}
-              run: npm run ci:e2e:run
+      - name: End-to-End
+        if: ${{ steps.configure.outputs.e2e == 'true' && steps.packaging.outcome == 'success' && always() }}
+        run: npm run ci:e2e:run
 
-            - name: Create application archive
-              if: always() && github.event.inputs.storeApplication != ''
-              run: git archive HEAD -o archive.zip
+      - name: Create application archive
+        if: always() && github.event.inputs.storeApplication != ''
+        run: git archive HEAD -o archive.zip
 
-            - name: Upload application archive
-              uses: actions/upload-artifact@v2
-              if: always() && github.event.inputs.storeApplication != ''
-              with:
-                  name: jhipster-jooq-${{ matrix.build }}.zip
-                  path: app/archive.zip
+      - name: Upload application archive
+        uses: actions/upload-artifact@v2
+        if: always() && github.event.inputs.storeApplication != ''
+        with:
+          name: jhipster-jooq-${{ matrix.build }}.zip
+          path: app/archive.zip

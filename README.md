@@ -15,7 +15,7 @@ This is a [JHipster](https://www.jhipster.tech/) blueprint, that is meant to be 
 
 As this is a [JHipster](https://www.jhipster.tech/) blueprint, we expect you have JHipster and its related tools already installed:
 
--   [Installing JHipster](https://www.jhipster.tech/installation/)
+- [Installing JHipster](https://www.jhipster.tech/installation/)
 
 # Usage
 
@@ -50,15 +50,15 @@ jhipster --blueprints jooq --skip-jhipster-dependencies
 
 # Features
 
--   Dependencies are added automatically.
+- Dependencies are added automatically.
 
 Dependencies are added to your favorite build tool (maven or gradle).
 
--   Repository interface.
+- Repository interface.
 
 A jOOQ repository interface is created for every (or opt-in/opt-out) entity.
 
--   Repository implementation.
+- Repository implementation.
 
 A jOOQ repository implementation with DSLContext (jOOQ) is created for every (or opt-in/opt-out) entity.
 
