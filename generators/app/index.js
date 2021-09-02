@@ -4,10 +4,8 @@ function createGenerator(env) {
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const constants = require(`${env.getPackagePath('jhipster:server')}/generators/generator-constants`);
     return class extends env.requireGenerator('jhipster:server') {
-        constructor(args, opts) {
-            super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
-
-            this.sbsBlueprint = true;
+        constructor(args, opts, features) {
+            super(args, opts, features);
 
             this.option('jooq-version', {
                 desc: 'Use jOOQ version',
@@ -22,26 +20,18 @@ function createGenerator(env) {
                 type: Boolean,
             });
 
-            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
-            this.blueprintStorage = this._getStorage();
-
             if (this.options.help) return;
 
-            const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+            this.sbsBlueprint = true;
 
-            if (!jhContext) {
-                this.error(
+            if (!this.options.jhipsterContext) {
+                throw new Error(
                     `This is a JHipster blueprint and should be used only like ${chalk.yellow(
                         'jhipster --blueprint generator-jhipster-jooq'
                     )}`
                 );
             }
 
-            this.configOptions = jhContext.configOptions || {};
-
-            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
-            this.blueprintConfig = this.blueprintStorage.createProxy();
-            this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
             this.constants = this.constants || constants;
 
             if (this.options.jooqVersion) {

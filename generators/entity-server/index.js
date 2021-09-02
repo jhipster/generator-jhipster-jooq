@@ -4,8 +4,8 @@ function createGenerator(env) {
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const constants = require(`${env.getPackagePath('jhipster:entity-server')}/generators/generator-constants`);
     return class extends env.requireGenerator('jhipster:entity-server') {
-        constructor(args, opts) {
-            super(args, opts); // fromBlueprint variable is important
+        constructor(args, opts, features) {
+            super(args, opts, features); // fromBlueprint variable is important
 
             this.sbsBlueprint = true;
 
@@ -14,18 +14,11 @@ function createGenerator(env) {
                 type: Boolean,
             });
 
-            // Entity context
-            this.context = opts.context;
-            this.entityName = this._.upperFirst(this.context.name);
-
-            // Create/override blueprintConfig, jhipsterConfig, and constants to keep jhipster 6 compatibility.
             this.constants = this.constants || constants;
-
-            this.blueprintConfig = this._getStorage().createProxy();
-            this.jhipsterConfig = this._getStorage('generator-jhipster').createProxy();
 
             this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
             this.entityConfig = this.entityStorage.createProxy();
+            console.log(this.entityStorage.getAll());
 
             // Add jooq to prompt/option.
             this.registerConfigPrompts({
@@ -42,15 +35,13 @@ function createGenerator(env) {
 
             if (this.options.help) return;
 
-            if (!this.context) {
-                this.error(
+            if (!this.entity) {
+                throw new Error(
                     `This is a JHipster blueprint and should be used only like ${chalk.yellow(
                         'jhipster --blueprint generator-jhipster-jooq'
                     )}`
                 );
             }
-
-            this.configOptions = opts.configOptions || {};
         }
 
         get configuring() {
@@ -69,8 +60,8 @@ function createGenerator(env) {
                 loadConfig() {
                     if (!this.entityConfig.jooq) return;
                     const { upperFirst, camelCase } = this._;
-                    this.jooqGeneratedClassName = upperFirst(camelCase(this.context.entityTableName));
-                    this.jooqGeneratedEntityReference = this.context.entityTableName.toUpperCase();
+                    this.jooqGeneratedClassName = upperFirst(camelCase(this.entity.entityTableName));
+                    this.jooqGeneratedEntityReference = this.entity.entityTableName.toUpperCase();
                     this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
                 },
             };
@@ -82,11 +73,11 @@ function createGenerator(env) {
                     if (!this.entityConfig.jooq) return;
                     this.renderTemplate(
                         `${this.constants.SERVER_MAIN_SRC_DIR}package/repository/JOOQRepositoryImpl.java.ejs`,
-                        `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.context.entityClass}JOOQRepositoryImpl.java`
+                        `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.entity.entityClass}JOOQRepositoryImpl.java`
                     );
                     this.renderTemplate(
                         `${this.constants.SERVER_MAIN_SRC_DIR}package/repository/JOOQRepository.java.ejs`,
-                        `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.context.entityClass}JOOQRepository.java`
+                        `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.entity.entityClass}JOOQRepository.java`
                     );
                 },
             };
@@ -99,7 +90,7 @@ function createGenerator(env) {
                 jooqGeneratedClassName: this.jooqGeneratedClassName,
                 jooqGeneratedEntityReference: this.jooqGeneratedEntityReference,
                 packageName: this.jhipsterConfig.packageName,
-                ...this.context,
+                ...this.entity,
             };
         }
     };
