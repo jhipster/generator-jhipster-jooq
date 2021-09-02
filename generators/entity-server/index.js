@@ -14,11 +14,6 @@ function createGenerator(env) {
         type: Boolean,
       });
 
-      this.constants = this.constants || constants;
-
-      this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
-      this.entityConfig = this.entityStorage.createProxy();
-
       // Add jooq to prompt/option.
       this.registerConfigPrompts({
         exportOption: {
@@ -39,6 +34,12 @@ function createGenerator(env) {
           `This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint generator-jhipster-jooq')}`
         );
       }
+
+      this.constants = this.constants || constants;
+      this.entityName = this._.upperFirst(this.entity.name);
+
+      this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
+      this.entityConfig = this.entityStorage.createProxy();
     }
 
     get configuring() {
