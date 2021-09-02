@@ -148,7 +148,7 @@ jobs:
                   rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
 
             - name: 'GENERATION: project'
-              run: jhipster jdl --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
+              run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }} } } "
               id: app
 
             #----------------------------------------------------------------------
