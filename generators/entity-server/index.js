@@ -1,101 +1,98 @@
 const chalk = require('chalk');
 
 function createGenerator(env) {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    const constants = require(`${env.getPackagePath('jhipster:entity-server')}/generators/generator-constants`);
-    return class extends env.requireGenerator('jhipster:entity-server') {
-        constructor(args, opts, features) {
-            super(args, opts, features); // fromBlueprint variable is important
+  // eslint-disable-next-line import/no-dynamic-require, global-require
+  const constants = require(`${env.getPackagePath('jhipster:entity-server')}/generators/generator-constants`);
+  return class extends env.requireGenerator('jhipster:entity-server') {
+    constructor(args, opts, features) {
+      super(args, opts, features); // fromBlueprint variable is important
 
-            this.sbsBlueprint = true;
+      this.sbsBlueprint = true;
 
-            this.option('jooq', {
-                desc: 'Create jOOQ repository for this entity',
-                type: Boolean,
-            });
+      this.option('jooq', {
+        desc: 'Create jOOQ repository for this entity',
+        type: Boolean,
+      });
 
-            this.constants = this.constants || constants;
+      this.constants = this.constants || constants;
 
-            this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
-            this.entityConfig = this.entityStorage.createProxy();
-            console.log(this.entityStorage.getAll());
+      this.entityStorage = this.createStorage(this.destinationPath(this.constants.JHIPSTER_CONFIG_DIR, `${this.entityName}.json`));
+      this.entityConfig = this.entityStorage.createProxy();
 
-            // Add jooq to prompt/option.
-            this.registerConfigPrompts({
-                exportOption: {
-                    desc: 'Create jOOQ repository for this entity',
-                },
-                type: 'confirm',
-                when: () => !this.options.skipPrompts && this.blueprintConfig.jooqOptional,
-                name: 'jooq',
-                message: `Add jOOQ repository for ${this.entityName}?`,
-                default: true,
-                storage: this.entityStorage,
-            });
+      // Add jooq to prompt/option.
+      this.registerConfigPrompts({
+        exportOption: {
+          desc: 'Create jOOQ repository for this entity',
+        },
+        type: 'confirm',
+        when: () => !this.options.skipPrompts && this.blueprintConfig.jooqOptional,
+        name: 'jooq',
+        message: `Add jOOQ repository for ${this.entityName}?`,
+        default: true,
+        storage: this.entityStorage,
+      });
 
-            if (this.options.help) return;
+      if (this.options.help) return;
 
-            if (!this.entity) {
-                throw new Error(
-                    `This is a JHipster blueprint and should be used only like ${chalk.yellow(
-                        'jhipster --blueprint generator-jhipster-jooq'
-                    )}`
-                );
-            }
-        }
+      if (!this.entity) {
+        throw new Error(
+          `This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint generator-jhipster-jooq')}`
+        );
+      }
+    }
 
-        get configuring() {
-            return {
-                configure() {
-                    // registerConfigPrompts sets value as null if prompt was skipped.
-                    if (this.entityConfig.jooq === undefined || this.entityConfig.jooq === null) {
-                        this.entityConfig.jooq = !this.blueprintConfig.jooqOptional;
-                    }
-                },
-            };
-        }
+    get configuring() {
+      return {
+        configure() {
+          // registerConfigPrompts sets value as null if prompt was skipped.
+          if (this.entityConfig.jooq === undefined || this.entityConfig.jooq === null) {
+            this.entityConfig.jooq = !this.blueprintConfig.jooqOptional;
+          }
+        },
+      };
+    }
 
-        get default() {
-            return {
-                loadConfig() {
-                    if (!this.entityConfig.jooq) return;
-                    const { upperFirst, camelCase } = this._;
-                    this.jooqGeneratedClassName = upperFirst(camelCase(this.entity.entityTableName));
-                    this.jooqGeneratedEntityReference = this.entity.entityTableName.toUpperCase();
-                    this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
-                },
-            };
-        }
+    get default() {
+      return {
+        loadConfig() {
+          if (!this.entityConfig.jooq) return;
+          const { upperFirst, camelCase } = this._;
+          this.jooqGeneratedClassName = upperFirst(camelCase(this.entity.entityTableName));
+          this.jooqGeneratedEntityReference = this.entity.entityTableName.toUpperCase();
+          this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
+        },
+      };
+    }
 
-        get writing() {
-            return {
-                writeJooqEntityFiles() {
-                    if (!this.entityConfig.jooq) return;
-                    this.renderTemplate(
-                        `${this.constants.SERVER_MAIN_SRC_DIR}package/repository/JOOQRepositoryImpl.java.ejs`,
-                        `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.entity.entityClass}JOOQRepositoryImpl.java`
-                    );
-                    this.renderTemplate(
-                        `${this.constants.SERVER_MAIN_SRC_DIR}package/repository/JOOQRepository.java.ejs`,
-                        `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.entity.entityClass}JOOQRepository.java`
-                    );
-                },
-            };
-        }
+    get writing() {
+      return {
+        writeJooqEntityFiles() {
+          if (!this.entityConfig.jooq) return;
+          this.renderTemplate(
+            `${this.constants.SERVER_MAIN_SRC_DIR}package/repository/JOOQRepositoryImpl.java.ejs`,
+            `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.entity.entityClass}JOOQRepositoryImpl.java`
+          );
+          this.renderTemplate(
+            `${this.constants.SERVER_MAIN_SRC_DIR}package/repository/JOOQRepository.java.ejs`,
+            `${this.constants.SERVER_MAIN_SRC_DIR}${this.jhipsterConfig.packageFolder}/repository/${this.entity.entityClass}JOOQRepository.java`
+          );
+        },
+      };
+    }
 
-        /* Custom data to be passed to templates */
-        _templateData() {
-            return {
-                jooqTargetName: this.jooqTargetName,
-                jooqGeneratedClassName: this.jooqGeneratedClassName,
-                jooqGeneratedEntityReference: this.jooqGeneratedEntityReference,
-                packageName: this.jhipsterConfig.packageName,
-                ...this.entity,
-            };
-        }
-    };
+    /* Custom data to be passed to templates */
+    _templateData() {
+      return {
+        jooqTargetName: this.jooqTargetName,
+        jooqGeneratedClassName: this.jooqGeneratedClassName,
+        jooqGeneratedEntityReference: this.jooqGeneratedEntityReference,
+        packageName: this.jhipsterConfig.packageName,
+        ...this.entity,
+      };
+    }
+  };
 }
 
 module.exports = {
-    createGenerator,
+  createGenerator,
 };

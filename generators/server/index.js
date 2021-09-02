@@ -4,139 +4,137 @@ const DEFAULT_JOOQ_VERSION = '3.14.8';
 const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '5.2.1';
 
 const JOOQ_FAMILY_MAPPING = {
-    postgresql: 'Postgres',
-    mariadb: 'MariaDB',
-    mysql: 'MySQL',
+  postgresql: 'Postgres',
+  mariadb: 'MariaDB',
+  mysql: 'MySQL',
 };
 
 function createGenerator(env) {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    const constants = require(`${env.getPackagePath('jhipster:server')}/generators/generator-constants`);
-    return class extends env.requireGenerator('jhipster:server') {
-        constructor(args, opts, features) {
-            super(args, opts, features);
+  // eslint-disable-next-line import/no-dynamic-require, global-require
+  const constants = require(`${env.getPackagePath('jhipster:server')}/generators/generator-constants`);
+  return class extends env.requireGenerator('jhipster:server') {
+    constructor(args, opts, features) {
+      super(args, opts, features);
 
-            this.sbsBlueprint = true;
+      this.sbsBlueprint = true;
 
-            if (this.options.help) return;
+      if (this.options.help) return;
 
-            if (!this.options.jhipsterContext) {
-                throw new Error(
-                    `This is a JHipster blueprint and should be used only like ${chalk.yellow(
-                        'jhipster --blueprint generator-jhipster-jooq'
-                    )}`
-                );
-            }
+      if (!this.options.jhipsterContext) {
+        throw new Error(
+          `This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint generator-jhipster-jooq')}`
+        );
+      }
 
-            this.constants = this.constants || constants;
-        }
+      this.constants = this.constants || constants;
+    }
 
-        get configuring() {
-            return {
-                configureJooq() {
-                    this.jooqVersion = this.blueprintConfig.jooqVersion;
-                    if (this.jooqVersion === undefined) {
-                        this.jooqVersion = DEFAULT_JOOQ_VERSION;
-                    }
-                    this.info(`Using jOOQ version ${this.jooqVersion}.`);
-                },
-            };
-        }
+    get configuring() {
+      return {
+        configureJooq() {
+          this.jooqVersion = this.blueprintConfig.jooqVersion;
+          if (this.jooqVersion === undefined) {
+            this.jooqVersion = DEFAULT_JOOQ_VERSION;
+          }
+          this.info(`Using jOOQ version ${this.jooqVersion}.`);
+        },
+      };
+    }
 
-        get default() {
-            return {
-                prepareForTemplates() {
-                    this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
-                    this.jooqDialect = JOOQ_FAMILY_MAPPING[this.jhipsterConfig.prodDatabaseType] || '';
-                },
-            };
-        }
+    get default() {
+      return {
+        prepareForTemplates() {
+          this.jooqTargetName = `${this.jhipsterConfig.packageName}.jooq`;
+          this.jooqDialect = JOOQ_FAMILY_MAPPING[this.jhipsterConfig.prodDatabaseType] || '';
+        },
+      };
+    }
 
-        get writing() {
-            return {
-                writeJooqFiles() {
-                    this.renderTemplate('README.jooq.md.ejs', 'README.jooq.md');
-                    this.renderTemplate(
-                        `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml.ejs`,
-                        `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml`
-                    );
-                },
+    get writing() {
+      return {
+        writeJooqFiles() {
+          this.renderTemplate('README.jooq.md.ejs', 'README.jooq.md');
+          this.renderTemplate(
+            `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml.ejs`,
+            `${this.constants.SERVER_MAIN_RES_DIR}config/application-jooq.yml`
+          );
+        },
 
-                injectJooqMavenConfigurations() {
-                    if (this.jhipsterConfig.buildTool !== 'maven') return;
-                    this._addJooqWithMaven();
-                },
+        injectJooqMavenConfigurations() {
+          if (this.jhipsterConfig.buildTool !== 'maven') return;
+          this._addJooqWithMaven();
+        },
 
-                injectJooqGradleConfigurations() {
-                    if (this.jhipsterConfig.buildTool !== 'gradle') return;
-                    this._addJooqWithGradle();
-                },
-            };
-        }
+        injectJooqGradleConfigurations() {
+          if (this.jhipsterConfig.buildTool !== 'gradle') return;
+          this._addJooqWithGradle();
+        },
+      };
+    }
 
-        get end() {
-            return {
-                jooqEnd() {
-                    let applicationYmlFile;
-                    if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
-                        applicationYmlFile = 'application.yml';
-                    } else {
-                        applicationYmlFile = 'application-prod.yml';
-                    }
-                    const destinationYml = `${this.constants.SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
-                    this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
+    get end() {
+      return {
+        jooqEnd() {
+          let applicationYmlFile;
+          if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
+            applicationYmlFile = 'application.yml';
+          } else {
+            applicationYmlFile = 'application-prod.yml';
+          }
+          const destinationYml = `${this.constants.SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
+          this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
 spring:
   profiles:
     includes: jooq
 `);
-                },
-            };
-        }
+        },
+      };
+    }
 
-        /* Custom data to be passed to templates */
-        _templateData() {
-            return {
-                jooqVersion: this.jooqVersion,
-                jooqTargetName: this.jooqTargetName,
-                jooqDialect: this.jooqDialect,
-            };
-        }
+    /* Custom data to be passed to templates */
+    _templateData() {
+      return {
+        jooqVersion: this.jooqVersion,
+        jooqTargetName: this.jooqTargetName,
+        jooqDialect: this.jooqDialect,
+      };
+    }
 
-        /**
-         * Adds dependencies, and required files for maven
-         */
-        _addJooqWithMaven() {
-            this.renderTemplate('jooq.xml.ejs', 'jooq.xml');
+    /**
+     * Adds dependencies, and required files for maven
+     */
+    _addJooqWithMaven() {
+      this.renderTemplate('jooq.xml.ejs', 'jooq.xml');
 
-            // eslint-disable-next-line no-template-curly-in-string
-            const jooqVersion = '${jooq.version}';
-            this.addMavenProperty('jooq.version', this.jooqVersion);
-            this.addMavenDependency(
-                'org.springframework.boot',
-                'spring-boot-starter-jooq',
-                undefined,
-                `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
+      // eslint-disable-next-line no-template-curly-in-string
+      const jooqVersion = '${jooq.version}';
+      this.addMavenProperty('jooq.version', this.jooqVersion);
+      this.addMavenDependency(
+        'org.springframework.boot',
+        'spring-boot-starter-jooq',
+        undefined,
+        `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
              <exclusions>
                 <exclusion>
                     <groupId>org.jooq</groupId>
                     <artifactId>jooq</artifactId>
                 </exclusion>
             </exclusions>`
-            );
-            this.addMavenDependency('org.jooq', 'jooq');
+      );
+      this.addMavenDependency('org.jooq', 'jooq');
 
-            // Match jooq version.
-            this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
+      // Match jooq version.
+      this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
 
-            this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqVersion);
+      this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqVersion);
 
-            this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
+      this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
 
-            this.addMavenPluginManagement(
-                'org.jooq',
-                'jooq-codegen-maven',
-                jooqVersion,
-                `                    <configuration>
+      this.addMavenPluginManagement(
+        'org.jooq',
+        'jooq-codegen-maven',
+        jooqVersion,
+        `                    <configuration>
                         <configurationFile>jooq.xml</configurationFile>
                     </configuration>
                     <executions>
@@ -148,30 +146,30 @@ spring:
                             </goals>
                         </execution>
                     </executions>`
-            );
-        }
+      );
+    }
 
-        /**
-         * Adds dependencies, and required files for gradle
-         */
-        _addJooqWithGradle() {
-            this.addGradlePluginToPluginsBlock(
-                'nu.studer.jooq',
-                this.blueprintConfig.jooqGradlePluginVersion || DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION
-            );
-            this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions-liquibase', this.jooqVersion);
+    /**
+     * Adds dependencies, and required files for gradle
+     */
+    _addJooqWithGradle() {
+      this.addGradlePluginToPluginsBlock(
+        'nu.studer.jooq',
+        this.blueprintConfig.jooqGradlePluginVersion || DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION
+      );
+      this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions-liquibase', this.jooqVersion);
 
-            const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
-                '.',
-                'build.gradle',
-                'jhipster-needle-gradle-dependency',
-                'jooqGenerator files("src/main/resources")'
-            );
-            this.needleApi.serverGradle.addBlockContentToFile(rewriteFileModel, 'Error adding jOOQ dependency.');
+      const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
+        '.',
+        'build.gradle',
+        'jhipster-needle-gradle-dependency',
+        'jooqGenerator files("src/main/resources")'
+      );
+      this.needleApi.serverGradle.addBlockContentToFile(rewriteFileModel, 'Error adding jOOQ dependency.');
 
-            this.fs.append(
-                this.destinationPath('build.gradle'),
-                `
+      this.fs.append(
+        this.destinationPath('build.gradle'),
+        `
 // START OF CONFIGURATION ADDED BY JOOQ BLUEPRINT 
 jooq {
     version = '${this.jooqVersion}'  // the default (can be omitted)
@@ -204,11 +202,11 @@ jooq {
 }
 // END OF CONFIGURATION ADDED BY JOOQ BLUEPRINT 
 `
-            );
-        }
-    };
+      );
+    }
+  };
 }
 
 module.exports = {
-    createGenerator,
+  createGenerator,
 };
