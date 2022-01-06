@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-const DEFAULT_JOOQ_VERSION = '3.15.2';
+const DEFAULT_JOOQ_VERSION = '3.16.0';
 const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '6.0.1';
 
 const JOOQ_FAMILY_MAPPING = {
