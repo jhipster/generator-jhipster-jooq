@@ -191,7 +191,7 @@ jooq {
                         properties {
                             property {
                                 key = 'scripts'
-                                value = 'src/main/resources/config/liquibase/master.xml'
+                                value = 'config/liquibase/master.xml'
                             }
                             property {
                                 key = 'changeLogParameters.contexts'
