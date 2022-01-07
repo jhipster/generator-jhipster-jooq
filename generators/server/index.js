@@ -41,6 +41,29 @@ function createGenerator(env) {
       };
     }
 
+    get loading() {
+      return {
+        loadApplication() {
+          this.application = {};
+          this.loadAppConfig(undefined, this.application);
+          this.loadClientConfig(undefined, this.application);
+          this.loadServerConfig(undefined, this.application);
+          this.loadPlatformConfig(undefined, this.application);
+          this.loadTranslationConfig(undefined, this.application);
+        },
+      };
+    }
+
+    get preparing() {
+      return {
+        parepareApplication() {
+          this.application.mainClass = this.getMainClassName(this.application.baseName);
+          this.loadDerivedAppConfig();
+          this.loadDerivedClientConfig();
+        },
+      };
+    }
+
     get default() {
       return {
         prepareForTemplates() {
@@ -68,6 +91,24 @@ function createGenerator(env) {
         injectJooqGradleConfigurations() {
           if (this.jhipsterConfig.buildTool !== 'gradle') return;
           this._addJooqWithGradle();
+        },
+      };
+    }
+
+    get postWriting() {
+      return {
+        // Can be dropped for spring-boot 2.6
+        injectR2DBExclusion() {
+          const mainClassPath = this.destinationPath(
+            `${this.constants.SERVER_MAIN_SRC_DIR}${this.application.packageFolder}/${this.application.mainClass}.java`
+          );
+          const content = this.fs
+            .read(mainClassPath)
+            .replace(
+              '@SpringBootApplication',
+              '@SpringBootApplication(exclude = { org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration.class })'
+            );
+          this.fs.write(mainClassPath, content);
         },
       };
     }
