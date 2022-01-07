@@ -1,11 +1,10 @@
-# generator-jhipster-jooq
+# jooq
 
 > JHipster blueprint, jOOQ blueprint for JHipster
 
 [![NPM version][npm-image]][npm-url]
 [![Generator][github-generator-image]][github-generator-url]
 [![Integration Test][github-integration-image]][github-integration-url]
-[![Dependency Status][daviddm-image]][daviddm-url]
 
 # Introduction
 
@@ -16,6 +15,14 @@ This is a [JHipster](https://www.jhipster.tech/) blueprint, that is meant to be 
 As this is a [JHipster](https://www.jhipster.tech/) blueprint, we expect you have JHipster and its related tools already installed:
 
 - [Installing JHipster](https://www.jhipster.tech/installation/)
+
+# Installation
+
+To install or update this blueprint:
+
+```bash
+npm install -g generator-jhipster-jooq
+```
 
 # Usage
 
@@ -64,9 +71,7 @@ A jOOQ repository implementation with DSLContext (jOOQ) is created for every (or
 
 [npm-image]: https://img.shields.io/npm/v/generator-jhipster-jooq.svg
 [npm-url]: https://npmjs.org/package/generator-jhipster-jooq
-[github-generator-image]: https://github.com/jhipster/generator-jhipster-jooq/workflows/Generator/badge.svg
-[github-generator-url]: https://github.com/jhipster/generator-jhipster-tenantview/actions?query=workflow%3A%22Generator%22
-[github-integration-image]: https://github.com/jhipster/generator-jhipster-jooq/workflows/Integration%20Test/badge.svg
-[github-integration-url]: https://github.com/jhipster/generator-jhipster-tenantview/actions?query=workflow%3A%22Integration+Test%22
-[daviddm-image]: https://david-dm.org/jhipster/generator-jhipster-jooq.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/jhipster/generator-jhipster-jooq
+[github-generator-image]: https://github.com/jhipster/generator-jhipster-jooq/actions/workflows/generator.yml/badge.svg
+[github-generator-url]: https://github.com/jhipster/generator-jhipster-jooq/actions/workflows/generator.yml
+[github-integration-image]: https://github.com/jhipster/generator-jhipster-jooq/actions/workflows/integration.yml/badge.svg
+[github-integration-url]: https://github.com/jhipster/generator-jhipster-jooq/actions/workflows/integration.yml
