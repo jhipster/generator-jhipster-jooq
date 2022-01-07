@@ -48,14 +48,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        generator-jhipster:
-          [
-            generator-jhipster@7.2.0,
-            generator-jhipster@7.3.1,
-            generator-jhipster@7.4.0,
-            generator-jhipster@7.5.0,
-            jhipster/generator-jhipster#main,
-          ]
+        generator-jhipster: [generator-jhipster@7.4.0, generator-jhipster@7.5.0, jhipster/generator-jhipster#main]
         build: [maven, gradle]
         app-type:
           - app
