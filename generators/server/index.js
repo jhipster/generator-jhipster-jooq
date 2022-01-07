@@ -117,15 +117,13 @@ spring:
              <exclusions>
                 <exclusion>
                     <groupId>org.jooq</groupId>
-                    <artifactId>jooq</artifactId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>`
       );
-      this.addMavenDependency('org.jooq', 'jooq');
 
-      // Match jooq version.
-      this.addMavenDependencyManagement('org.jooq', 'jooq', jooqVersion);
-
+      this.addMavenDependency('org.jooq', 'jooq', jooqVersion);
+      this.addMavenDependency('org.jooq', 'jooq-meta', jooqVersion);
       this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqVersion);
 
       this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
