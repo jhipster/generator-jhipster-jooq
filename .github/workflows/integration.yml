@@ -73,6 +73,7 @@ jobs:
         uses: ./generator-jhipster/.github/actions/setup
         with:
           entities-sample: ${{ matrix.entity }}
+          jhipster-bom-branch: ignore
 
       - uses: actions/setup-node@v2
         with:
