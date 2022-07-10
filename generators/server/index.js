@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 
-const DEFAULT_JOOQ_VERSION = '3.16.0';
-const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '6.0.1';
+const DEFAULT_JOOQ_VERSION = '3.16.4';
+const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '7.1.1';
 
 const JOOQ_FAMILY_MAPPING = {
   postgresql: 'Postgres',
@@ -91,24 +91,6 @@ function createGenerator(env) {
         injectJooqGradleConfigurations() {
           if (this.jhipsterConfig.buildTool !== 'gradle') return;
           this._addJooqWithGradle();
-        },
-      };
-    }
-
-    get postWriting() {
-      return {
-        // Can be dropped for spring-boot 2.6
-        injectR2DBExclusion() {
-          const mainClassPath = this.destinationPath(
-            `${this.constants.SERVER_MAIN_SRC_DIR}${this.application.packageFolder}/${this.application.mainClass}.java`
-          );
-          const content = this.fs
-            .read(mainClassPath)
-            .replace(
-              '@SpringBootApplication',
-              '@SpringBootApplication(exclude = { org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration.class })'
-            );
-          this.fs.write(mainClassPath, content);
         },
       };
     }
@@ -216,7 +198,7 @@ spring:
       this.fs.append(
         this.destinationPath('build.gradle'),
         `
-// START OF CONFIGURATION ADDED BY JOOQ BLUEPRINT 
+// START OF CONFIGURATION ADDED BY JOOQ BLUEPRINT
 jooq {
     version = '${this.jooqVersion}'  // the default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
@@ -246,7 +228,7 @@ jooq {
         }
     }
 }
-// END OF CONFIGURATION ADDED BY JOOQ BLUEPRINT 
+// END OF CONFIGURATION ADDED BY JOOQ BLUEPRINT
 `
       );
     }
