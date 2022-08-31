@@ -54,7 +54,7 @@ jobs:
           - app
         include:
           - app-type: app
-            entity: sqlfull
+            entity: sql
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
