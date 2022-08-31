@@ -101,7 +101,7 @@ jobs:
         run: |
           $JHI_SCRIPTS/11-generate-config.sh
           ls -la $JHI_FOLDER_APP/.jhipster/
-          rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
+          rm $JHI_FOLDER_APP/.jhipster/*JpaFiltering*
 
       - name: 'GENERATION: project'
         run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, testFrameworks [cypress] } } "
