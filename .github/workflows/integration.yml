@@ -59,11 +59,11 @@ jobs:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: generator-jhipster-jooq
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: jhipster/generator-jhipster
           path: generator-jhipster
@@ -75,11 +75,11 @@ jobs:
           entities-sample: ${{ matrix.entity }}
           jhipster-bom-branch: ignore
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.setup.outputs.node-version }}
 
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: ${{ steps.setup.outputs.java-version }}
