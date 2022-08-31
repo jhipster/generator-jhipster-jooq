@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import { GeneratorBaseBlueprint, constants } from 'generator-jhipster';
+import { EntityServerGenerator, constants } from 'generator-jhipster';
 import { PRIORITY_PREFIX } from 'generator-jhipster/esm/priorities';
 
-export default class JooqEntityGenerator extends GeneratorBaseBlueprint {
+export default class JooqEntityGenerator extends EntityServerGenerator {
   constructor(args, opts, features) {
     super(args, opts, features); // fromBlueprint variable is important
 
