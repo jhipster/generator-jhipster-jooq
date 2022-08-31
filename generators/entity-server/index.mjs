@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { constants } from 'generator-jhipster';
-import EntityServerGenerator from 'generator-jhipster/generators/entity-server';
+import EntityServerGenerator from 'generator-jhipster/esm/generators/entity-server';
 import { PRIORITY_PREFIX } from 'generator-jhipster/esm/priorities';
 
 export default class JooqEntityGenerator extends EntityServerGenerator {
