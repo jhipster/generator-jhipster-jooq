@@ -3,10 +3,10 @@
     "node": true,
     "es2020": true
   },
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
-  "plugins": ["mocha", "prettier"],
+  "extends": ["airbnb-base", "plugin:mocha/recommended", "plugin:prettier/recommended"],
   "parserOptions": {
-    "ecmaVersion": 11
+    "ecmaVersion": 11,
+    "sourceType": "module"
   },
   "overrides": [
     {
@@ -17,31 +17,13 @@
     }
   ],
   "rules": {
-    "import/extensions": [0, { "pattern": { "{c,m,}js": "always" } }],
-    "prettier/prettier": "error",
-    "linebreak-style": 0,
-    "eol-last": 2,
-    "quotes": [2, "single", { "avoidEscape": true }],
-    "semi": [2, "always"],
-    "eqeqeq": [2, "smart"],
-    "no-restricted-globals": ["off"],
-    "no-use-before-define": [2, "nofunc"],
-    "no-confusing-arrow": "off",
-    "no-unused-vars": [2, { "vars": "local", "args": "none" }],
-    "no-multi-str": 2,
-    "no-irregular-whitespace": 2,
-    "comma-dangle": "off",
-    "max-len": "off",
-    "func-names": "off",
+    "no-param-reassign": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
-    "no-plusplus": "off",
-    "no-unused-expressions": 0,
-    "prefer-destructuring": "off",
-    "no-multi-assign": "off",
-    "no-param-reassign": "off",
+    "mocha/no-mocha-arrows": "off",
+    "func-names": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "no-await-in-loop": "off",
+    "import/no-unresolved": [2, { "ignore": ["^#[\\w\\d/\\-]+$"] }],
     "no-restricted-syntax": [
       "error",
       {

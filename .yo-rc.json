@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "additionalSubGenerators": "jooq",
+    "app": {
+      "command": false,
+      "priorities": [],
+      "sbs": true
+    },
+    "baseName": "jooq",
+    "cli": false,
+    "generators": {
+      "app": {
+        "command": false,
+        "priorities": [],
+        "sbs": true,
+        "written": true
+      },
+      "jooq": {
+        "command": false,
+        "priorities": ["configuring", "default", "writing", "end"],
+        "sbs": null,
+        "written": true
+      },
+      "server": {
+        "command": false,
+        "priorities": ["composing"],
+        "sbs": true,
+        "written": true
+      }
+    },
+    "jhipsterVersion": "7.1.0",
+    "projectName": "JHipster project",
+    "server": {
+      "command": false,
+      "priorities": ["composing"],
+      "sbs": true
+    },
+    "skipCommitHook": true,
+    "subGenerators": ["app", "server"]
+  }
+}
