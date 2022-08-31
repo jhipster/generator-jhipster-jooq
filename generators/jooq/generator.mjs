@@ -199,7 +199,6 @@ profiles:
                     <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
-                        <version>\${h2.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
