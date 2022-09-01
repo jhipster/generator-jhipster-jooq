@@ -82,7 +82,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: ${{ steps.setup.outputs.java-version }}
+          java-version: 17
 
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
