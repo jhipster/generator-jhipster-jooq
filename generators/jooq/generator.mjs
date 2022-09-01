@@ -128,18 +128,6 @@ export default class JooqGenerator extends GeneratorBaseEntities {
         if (!buildToolGradle) return;
         this.addJooqWithGradle(jooqVersion, jooqTargetName);
       },
-
-      // Can be dropped for spring-boot 2.6
-      injectR2DBExclusion({ application: { packageFolder, mainClass } }) {
-        const mainClassPath = this.destinationPath(`${SERVER_MAIN_SRC_DIR}${packageFolder}/${mainClass}.java`);
-        const content = this.fs
-          .read(mainClassPath)
-          .replace(
-            '@SpringBootApplication',
-            '@SpringBootApplication(exclude = { org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration.class })'
-          );
-        this.fs.write(mainClassPath, content);
-      },
     };
   }
 
@@ -155,8 +143,8 @@ export default class JooqGenerator extends GeneratorBaseEntities {
         const destinationYml = `${SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
         this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
 spring:
-profiles:
-  includes: jooq
+  profiles:
+    includes: jooq
 `);
       },
     };
