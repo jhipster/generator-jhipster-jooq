@@ -7,7 +7,7 @@
       "sbs": true
     },
     "baseName": "jooq",
-    "cli": false,
+    "cli": true,
     "generators": {
       "app": {
         "command": false,

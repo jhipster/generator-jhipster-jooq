@@ -28,7 +28,11 @@
   "imports": {
     "#test-utils": "./test/utils.mjs"
   },
+  "bin": {
+    "jhipster-jooq": "cli/cli.mjs"
+  },
   "files": [
+    "cli",
     "generators"
   ],
   "scripts": {
