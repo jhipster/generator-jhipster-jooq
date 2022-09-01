@@ -12,7 +12,7 @@ import {
 
 const { SERVER_MAIN_RES_DIR, SERVER_MAIN_SRC_DIR } = constants;
 
-const DEFAULT_JOOQ_VERSION = '3.15.2';
+const DEFAULT_JOOQ_VERSION = '3.17.3';
 const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '6.0.1';
 
 const JOOQ_FAMILY_MAPPING = {
@@ -184,7 +184,7 @@ profiles:
 
     this.addMavenDependency('org.jooq', 'jooq', jooqPomVersion);
     this.addMavenDependency('org.jooq', 'jooq-meta', jooqPomVersion);
-    this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqVersion);
+    this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqPomVersion);
 
     this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
 
@@ -199,6 +199,7 @@ profiles:
                     <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
+                        <version>2.1.214</version>
                     </dependency>
                 </dependencies>
                 <executions>
