@@ -1,4 +1,4 @@
-# jooq
+# generator-jhipster-jooq
 
 > JHipster blueprint, jOOQ blueprint for JHipster
 
