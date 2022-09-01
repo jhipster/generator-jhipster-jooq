@@ -13,7 +13,7 @@ import {
 const { SERVER_MAIN_RES_DIR, SERVER_MAIN_SRC_DIR } = constants;
 
 const DEFAULT_JOOQ_VERSION = '3.17.3';
-const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '6.0.1';
+const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '7.1.1';
 
 const JOOQ_FAMILY_MAPPING = {
   postgresql: 'Postgres',
