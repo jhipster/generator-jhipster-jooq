@@ -50,7 +50,7 @@ jobs:
         os: [ubuntu-latest]
         generator-jhipster: [jhipster/generator-jhipster#main]
         build: [maven, gradle]
-        reactive: ['--reactive', '--no-reactive']
+        reactive: ['false', 'true']
         app-type:
           - app
         include:
@@ -105,7 +105,7 @@ jobs:
           rm $JHI_FOLDER_APP/.jhipster/*JpaFiltering*
 
       - name: 'GENERATION: project'
-        run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} ${{ matrix.reactive }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, testFrameworks [cypress] } } "
+        run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, reactive ${{ matrix.reactive }}, testFrameworks [cypress] } } "
         id: app
 
       #----------------------------------------------------------------------
