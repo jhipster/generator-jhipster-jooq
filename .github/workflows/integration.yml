@@ -48,22 +48,22 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        generator-jhipster: [generator-jhipster@7.4.0, generator-jhipster@7.5.0, jhipster/generator-jhipster#main]
+        generator-jhipster: [jhipster/generator-jhipster#main]
         build: [maven, gradle]
         app-type:
           - app
         include:
           - app-type: app
-            entity: sqlfull
+            entity: sql
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: generator-jhipster-jooq
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: jhipster/generator-jhipster
           path: generator-jhipster
@@ -75,14 +75,14 @@ jobs:
           entities-sample: ${{ matrix.entity }}
           jhipster-bom-branch: ignore
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.setup.outputs.node-version }}
 
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: ${{ steps.setup.outputs.java-version }}
+          java-version: 17
 
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
@@ -101,7 +101,7 @@ jobs:
         run: |
           $JHI_SCRIPTS/11-generate-config.sh
           ls -la $JHI_FOLDER_APP/.jhipster/
-          rm $JHI_FOLDER_APP/.jhipster/JpaFiltering*
+          rm $JHI_FOLDER_APP/.jhipster/*JpaFiltering*
 
       - name: 'GENERATION: project'
         run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, testFrameworks [cypress] } } "
