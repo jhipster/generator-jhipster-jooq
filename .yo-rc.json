@@ -29,6 +29,7 @@
       }
     },
     "jhipsterVersion": "7.1.0",
+    "localBlueprint": false,
     "projectName": "JHipster project",
     "server": {
       "command": false,
