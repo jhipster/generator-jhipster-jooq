@@ -136,6 +136,10 @@ export default class extends BaseApplicationGenerator {
 
   get [BaseApplicationGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
+      adjustLiquibase({ application }) {
+        this.editFile(`${application.srcMainResources}config/liquibase/master.xml`, content => content.replaceAll('dbms="', 'dbms="h2,'));
+      },
+
       injectJooqMavenConfigurations({ application: { buildToolMaven, jooqVersion }, source }) {
         if (!buildToolMaven) return;
 
