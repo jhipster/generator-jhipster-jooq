@@ -10,7 +10,19 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
     beforeAll(async function () {
       await helpers
         .run(SUB_GENERATOR_NAMESPACE)
-        .withJHipsterConfig()
+        .withJHipsterConfig({}, [
+          {
+            name: 'EntityA',
+            changelogDate: '20220129025419',
+            jooq: true,
+            fields: [
+              {
+                fieldName: 'name',
+                fieldType: 'String',
+              },
+            ],
+          },
+        ])
         .withOptions({
           ignoreNeedlesError: true,
         })
@@ -50,9 +62,24 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
     beforeAll(async function () {
       await helpers
         .run(SUB_GENERATOR_NAMESPACE)
-        .withJHipsterConfig({
-          buildTool: 'gradle',
-        })
+        .withJHipsterConfig(
+          {
+            buildTool: 'gradle',
+          },
+          [
+            {
+              name: 'EntityA',
+              changelogDate: '20220129025419',
+              jooq: true,
+              fields: [
+                {
+                  fieldName: 'name',
+                  fieldType: 'String',
+                },
+              ],
+            },
+          ],
+        )
         .withOptions({
           ignoreNeedlesError: true,
         })

@@ -1,6 +1,8 @@
 import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
 import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 import { getPomVersionProperties, getGradleLibsVersionsProperties } from 'generator-jhipster/generators/server/support';
+import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
+
 import { TEMPLATES_MAIN_RESOURCES_DIR, TEMPLATES_MAIN_SOURCES_DIR } from 'generator-jhipster';
 import command from './command.mjs';
 
@@ -117,19 +119,15 @@ export default class extends BaseApplicationGenerator {
   get [BaseApplicationGenerator.WRITING_ENTITIES]() {
     return this.asWritingEntitiesTaskGroup({
       writeJooqEntityFiles({ application, entities }) {
-        const { packageFolder } = application;
-        for (const entity of entities) {
-          const { jooq, entityClass } = entity;
-          if (!jooq) return;
+        for (const entity of entities.filter(entity => entity.jooq)) {
           this.writeFiles({
             blocks: [
               {
-                from: `${TEMPLATES_MAIN_SOURCES_DIR}package/repository/`,
-                renameTo: (_ctx, fileName) => `${application.srcMainResources}${packageFolder}/repository/${entityClass}${fileName}`,
-                templates: ['JOOQRepositoryImpl.java', 'JOOQRepository.java'],
+                ...javaMainPackageTemplatesBlock(),
+                templates: ['repository/_EntityClass_JOOQRepositoryImpl.java', 'repository/_EntityClass_JOOQRepository.java'],
               },
             ],
-            context: { ...application, ...entities },
+            context: { ...application, ...entity },
           });
         }
       },
