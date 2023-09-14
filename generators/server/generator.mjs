@@ -1,28 +1,25 @@
-import chalk from 'chalk';
-import ServerGenerator from 'generator-jhipster/esm/generators/server';
-import { PRIORITY_PREFIX, COMPOSING_PRIORITY } from 'generator-jhipster/esm/priorities';
+import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
+import command from './command.mjs';
 
-export default class extends ServerGenerator {
+export default class extends BaseApplicationGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { taskPrefix: PRIORITY_PREFIX, ...features });
-
-    if (this.options.help) return;
-
-    if (!this.options.jhipsterContext) {
-      throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints jooq')}`);
-    }
-
-    this.sbsBlueprint = true;
+    super(args, opts, { ...features, sbsBlueprint: true });
   }
 
-  /**
-   * @returns {Record<string, (this: this): any>}
-   */
-  get [COMPOSING_PRIORITY]() {
-    return {
+  get [BaseApplicationGenerator.INITIALIZING]() {
+    return this.asInitializingTaskGroup({
+      async initializingTemplateTask() {
+        this.parseJHipsterArguments(command.arguments);
+        this.parseJHipsterOptions(command.options);
+      },
+    });
+  }
+
+  get [BaseApplicationGenerator.COMPOSING]() {
+    return this.asComposingTaskGroup({
       async composingTemplateTask() {
         await this.composeWithJHipster('jhipster-jooq:jooq');
       },
-    };
+    });
   }
 }

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-name: Integration Test JHipster 7
+name: Integration Test JHipster 8
 concurrency:
   # Group PRs by head_ref, push to main branch by commit id, and others branch by ref.
   group: ${{ github.workflow }}-${{ github.head_ref || (github.ref == 'refs/heads/main' && github.sha) || github.ref }}
@@ -61,11 +61,11 @@ jobs:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: generator-jhipster-jooq
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: jhipster/generator-jhipster
           path: generator-jhipster
@@ -90,9 +90,6 @@ jobs:
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
 
-      - name: 'GENERATION: install generator-jhipster'
-        run: npm install -g ${{ matrix.generator-jhipster }}
-
       - name: 'GENERATION: install generator-jhipster-jooq'
         run: |
           npm ci --prod
@@ -106,7 +103,7 @@ jobs:
           rm $JHI_FOLDER_APP/.jhipster/*JpaFiltering*
 
       - name: 'GENERATION: project'
-        run: jhipster jdl --skip-jhipster-dependencies --with-entities --no-insight --blueprints jooq --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, reactive ${{ matrix.reactive }}, testFrameworks [cypress] } } "
+        run: jhipster-jooq generate-sample sample --skip-jhipster-dependencies --no-insight --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, reactive ${{ matrix.reactive }}, testFrameworks [cypress] } } "
         id: app
 
       #----------------------------------------------------------------------

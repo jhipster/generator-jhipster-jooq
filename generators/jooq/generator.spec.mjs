@@ -45,4 +45,35 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
       result.assertFileContent('pom.xml', '<artifactId>jooq-meta-extensions-liquibase</artifactId>');
     });
   });
+
+  describe('with gradle', () => {
+    beforeAll(async function () {
+      await helpers
+        .run(SUB_GENERATOR_NAMESPACE)
+        .withJHipsterConfig({
+          buildTool: 'gradle',
+        })
+        .withOptions({
+          ignoreNeedlesError: true,
+        })
+        .withJHipsterLookup()
+        .withParentBlueprintLookup();
+    });
+
+    it('should succeed', () => {
+      expect(result.getStateSnapshot()).toMatchSnapshot();
+    });
+
+    it('writes README', () => {
+      result.assertFile('README.jooq.md');
+    });
+
+    it('writes gradle/jooq.gradle', () => {
+      result.assertFile('gradle/jooq.gradle');
+    });
+
+    it('writes application-jooq.yml', () => {
+      result.assertFile('src/main/resources/config/application-jooq.yml');
+    });
+  });
 });
