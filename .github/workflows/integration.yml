@@ -80,7 +80,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.setup.outputs.node-version }}
-          cache: 'npm'
 
       - uses: actions/setup-java@v3
         with:
