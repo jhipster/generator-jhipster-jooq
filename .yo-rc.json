@@ -8,6 +8,7 @@
     },
     "baseName": "jooq",
     "cli": true,
+    "entities": [],
     "generators": {
       "app": {
         "command": false,
@@ -31,6 +32,7 @@
     "jhipsterVersion": "7.1.0",
     "localBlueprint": false,
     "projectName": "JHipster project",
+    "sampleWritten": true,
     "server": {
       "command": false,
       "priorities": ["composing"],

@@ -1,23 +1,21 @@
-import { expect } from 'expect';
+import { beforeAll, describe, expect, it } from 'vitest';
 
-import { helpers, lookups } from '#test-utils';
+import { defaultHelpers as helpers, result } from 'generator-jhipster/testing';
 
 const SUB_GENERATOR = 'jooq';
 const SUB_GENERATOR_NAMESPACE = `jhipster-jooq:${SUB_GENERATOR}`;
 
 describe('SubGenerator jooq of jooq JHipster blueprint', () => {
   describe('run', () => {
-    let result;
-    before(async function () {
-      result = await helpers
-        .create(SUB_GENERATOR_NAMESPACE)
+    beforeAll(async function () {
+      await helpers
+        .run(SUB_GENERATOR_NAMESPACE)
+        .withJHipsterConfig()
         .withOptions({
-          reproducible: true,
-          defaults: true,
-          baseName: 'jhipster',
+          ignoreNeedlesError: true,
         })
-        .withLookups(lookups)
-        .run();
+        .withJHipsterLookup()
+        .withParentBlueprintLookup();
     });
 
     it('should succeed', () => {
