@@ -80,6 +80,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.setup.outputs.node-version }}
+          cache: 'npm'
 
       - uses: actions/setup-java@v3
         with:
@@ -103,7 +104,7 @@ jobs:
           rm $JHI_FOLDER_APP/.jhipster/*JpaFiltering*
 
       - name: 'GENERATION: project'
-        run: jhipster-jooq generate-sample sample --skip-jhipster-dependencies --no-insight --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, reactive ${{ matrix.reactive }}, testFrameworks [cypress] } } "
+        run: jhipster-jooq jdl --skip-jhipster-dependencies --no-insight --skip-checks --build ${{ matrix.build }} --inline "application { config { prodDatabaseType postgresql, buildTool ${{ matrix.build }}, reactive ${{ matrix.reactive }}, testFrameworks [cypress] } } "
         id: app
 
       #----------------------------------------------------------------------
