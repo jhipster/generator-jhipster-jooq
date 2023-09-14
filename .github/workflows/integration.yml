@@ -115,7 +115,7 @@ jobs:
           cat */package.json || true
 
       - name: Project information
-        run: jhipster info
+        run: jhipster-jooq info
 
       - name: Folder information
         run: ls -la
