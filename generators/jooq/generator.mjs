@@ -137,6 +137,8 @@ export default class extends BaseApplicationGenerator {
   get [BaseApplicationGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
       adjustLiquibase({ application }) {
+        if (application.devDatabaseTypeH2Any) return;
+
         this.editFile(`${application.srcMainResources}config/liquibase/master.xml`, content => content.replaceAll('dbms="', 'dbms="h2,'));
       },
 
