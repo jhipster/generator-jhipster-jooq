@@ -38,7 +38,7 @@ on:
       - '*'
 jobs:
   applications:
-    name: jOOQ (${{ matrix.build }}, ${{ matrix.generator-jhipster }})
+    name: jOOQ (${{ matrix.build }}, reactive ${{ matrix.reactive }}, ${{ matrix.generator-jhipster }})
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -123,12 +123,6 @@ jobs:
       #----------------------------------------------------------------------
       # Tests
       #----------------------------------------------------------------------
-      - name: Start db containers
-        run: npm run ci:e2e:prepare:docker
-
-      - name: Start others containers
-        run: npm run docker:others:up
-
       - name: Backend info
         if: ${{ steps.app.outcome == 'success' && always() }}
         run: npm run backend:info
