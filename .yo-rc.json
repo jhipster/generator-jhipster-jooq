@@ -8,22 +8,17 @@
     },
     "baseName": "jooq",
     "cli": true,
+    "entities": [],
     "generators": {
-      "app": {
-        "command": false,
-        "priorities": [],
-        "sbs": true,
-        "written": true
-      },
       "jooq": {
         "command": false,
-        "priorities": ["configuring", "default", "writing", "end"],
+        "priorities": ["preparing", "configuringEachEntity", "preparingEachEntity", "writing", "writingEntities", "postWriting", "end"],
         "sbs": null,
         "written": true
       },
       "server": {
         "command": false,
-        "priorities": ["composing"],
+        "priorities": ["initializing", "composing"],
         "sbs": true,
         "written": true
       }
@@ -31,6 +26,7 @@
     "jhipsterVersion": "7.1.0",
     "localBlueprint": false,
     "projectName": "JHipster project",
+    "sampleWritten": true,
     "server": {
       "command": false,
       "priorities": ["composing"],

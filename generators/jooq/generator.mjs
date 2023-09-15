@@ -1,19 +1,12 @@
-import { GeneratorBaseEntities, constants } from 'generator-jhipster';
-import {
-  PRIORITY_PREFIX,
-  PREPARING_PRIORITY,
-  CONFIGURING_EACH_ENTITY_PRIORITY,
-  PREPARING_EACH_ENTITY_PRIORITY,
-  WRITING_PRIORITY,
-  WRITING_ENTITIES_PRIORITY,
-  POST_WRITING_PRIORITY,
-  END_PRIORITY,
-} from 'generator-jhipster/esm/priorities';
+import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
+import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
+import { getPomVersionProperties, getGradleLibsVersionsProperties } from 'generator-jhipster/generators/server/support';
+import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
-const { SERVER_MAIN_RES_DIR, SERVER_MAIN_SRC_DIR } = constants;
+import { TEMPLATES_MAIN_RESOURCES_DIR, TEMPLATES_MAIN_SOURCES_DIR } from 'generator-jhipster';
+import command from './command.mjs';
 
-const DEFAULT_JOOQ_VERSION = '3.17.3';
-const DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION = '7.1.1';
+const groupId = 'org.jooq';
 
 const JOOQ_FAMILY_MAPPING = {
   postgresql: 'Postgres',
@@ -21,34 +14,59 @@ const JOOQ_FAMILY_MAPPING = {
   mysql: 'MySQL',
 };
 
-export default class JooqGenerator extends GeneratorBaseEntities {
-  constructor(args, opts, features) {
-    super(args, opts, { taskPrefix: PRIORITY_PREFIX, unique: 'namespace', ...features });
-  }
-
-  async _postConstruct() {
+export default class extends BaseApplicationGenerator {
+  async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
     await this.dependsOnJHipster('server');
   }
 
-  get [PREPARING_PRIORITY]() {
-    return {
-      preparingJooq({ application }) {
-        const { baseName, packageName, prodDatabaseType } = application;
-        const { jooqVersion = DEFAULT_JOOQ_VERSION } = this.blueprintConfig;
+  get [BaseApplicationGenerator.INITIALIZING]() {
+    return this.asInitializingTaskGroup({
+      async initializingTemplateTask() {
+        this.parseJHipsterArguments(command.arguments);
+        this.parseJHipsterOptions(command.options);
+      },
+    });
+  }
 
-        application.jooqVersion = jooqVersion;
-        application.mainClass = this.getMainClassName(baseName);
+  get [BaseApplicationGenerator.LOADING]() {
+    return this.asLoadingTaskGroup({
+      async loading({ application }) {
+        const pomFile = this.readTemplate(this.templatePath('../resources/pom.xml'));
+        const gradleLibsVersions = this.readTemplate(this.templatePath('../resources/gradle/libs.versions.toml'))?.toString();
+
+        Object.assign(
+          application.javaDependencies,
+          this.prepareDependencies(
+            {
+              ...getPomVersionProperties(pomFile),
+              ...getGradleLibsVersionsProperties(gradleLibsVersions),
+            },
+            // Gradle doesn't allows snakeCase
+            value => `'${this._.kebabCase(value).toUpperCase()}-VERSION'`,
+          ),
+        );
+      },
+    });
+  }
+
+  get [BaseApplicationGenerator.PREPARING]() {
+    return this.asPreparingTaskGroup({
+      preparingJooq({ application }) {
+        const { packageName, prodDatabaseType } = application;
+        const { jooqVersion } = this.blueprintConfig;
+
+        application.jooqVersion = jooqVersion ?? application.javaDependencies.jooq;
         application.jooqTargetName = `${packageName}.jooq`;
         application.jooqDialect = JOOQ_FAMILY_MAPPING[prodDatabaseType] || '';
 
-        this.info(`Using jOOQ version ${this.jooqVersion}.`);
+        this.log.info(`Using jOOQ version ${this.jooqVersion}.`);
       },
-    };
+    });
   }
 
-  get [CONFIGURING_EACH_ENTITY_PRIORITY]() {
-    return {
+  get [BaseApplicationGenerator.CONFIGURING_EACH_ENTITY]() {
+    return this.asConfiguringEachEntityTaskGroup({
       configure({ entityConfig }) {
         const { jooq } = entityConfig;
         // registerConfigPrompts sets value as null if prompt was skipped.
@@ -56,131 +74,104 @@ export default class JooqGenerator extends GeneratorBaseEntities {
           entityConfig.jooq = !this.blueprintConfig.jooqOptional;
         }
       },
-    };
+    });
   }
 
-  get [PREPARING_EACH_ENTITY_PRIORITY]() {
-    return {
+  get [BaseApplicationGenerator.PREPARING_EACH_ENTITY]() {
+    return this.asPreparingEachEntityTaskGroup({
       configure({ entity }) {
         if (!entity.jooq) return;
         const { upperFirst, camelCase } = this._;
         entity.jooqGeneratedClassName = upperFirst(camelCase(entity.entityTableName));
         entity.jooqGeneratedEntityReference = entity.entityTableName.toUpperCase();
       },
-    };
+    });
   }
 
-  /** @typedef {(this: this, args: ApplicationTaskParam) => Promise<void>} ApplicationTask */
-  /** @returns {Record<string, ApplicationTask>} */
-  get [WRITING_PRIORITY]() {
-    return {
+  get [BaseApplicationGenerator.WRITING]() {
+    return this.asWritingTaskGroup({
       writeJooqFiles({ application }) {
         this.writeFiles({
-          templates: ['README.jooq.md', `${SERVER_MAIN_RES_DIR}config/application-jooq.yml`],
+          blocks: [
+            {
+              templates: ['README.jooq.md', `${TEMPLATES_MAIN_RESOURCES_DIR}config/application-jooq.yml`],
+            },
+            {
+              ...javaMainPackageTemplatesBlock(),
+              condition: ctx => ctx.reactive,
+              templates: ['config/jOOQConfig.java'],
+            },
+            {
+              condition: ctx => ctx.buildToolMaven,
+              templates: ['jooq.xml'],
+            },
+            {
+              condition: ctx => ctx.buildToolGradle,
+              templates: ['gradle/jooq.gradle'],
+            },
+          ],
           context: application,
         });
       },
-
-      injectJooqMavenConfigurations({ application }) {
-        if (!application.buildToolMaven) return;
-
-        this.writeFiles({
-          templates: ['jooq.xml'],
-          context: application,
-        });
-      },
-    };
+    });
   }
 
-  /** @typedef {ApplicationTaskParam & { entities: Object.<string, any>[] }} WritingEntitiesTaskParam */
-  /** @typedef {(this: this, args: WritingEntitiesTaskParam) => Promise<void>} WritingEntitiesTask */
-  /** @returns {Record<string, WritingEntitiesTask>} */
-  get [WRITING_ENTITIES_PRIORITY]() {
-    return {
+  get [BaseApplicationGenerator.WRITING_ENTITIES]() {
+    return this.asWritingEntitiesTaskGroup({
       writeJooqEntityFiles({ application, entities }) {
-        const { packageFolder } = application;
-        for (const entity of entities) {
-          const { jooq, entityClass } = entity;
-          if (!jooq) return;
+        for (const entity of entities.filter(entity => entity.jooq)) {
           this.writeFiles({
             blocks: [
               {
-                from: `${SERVER_MAIN_SRC_DIR}package/repository/`,
-                renameTo: (_ctx, fileName) => `${SERVER_MAIN_SRC_DIR}${packageFolder}/repository/${entityClass}${fileName}`,
-                templates: ['JOOQRepositoryImpl.java', 'JOOQRepository.java'],
+                ...javaMainPackageTemplatesBlock(),
+                templates: ['repository/_EntityClass_JOOQRepositoryImpl.java', 'repository/_EntityClass_JOOQRepository.java'],
               },
             ],
-            context: { ...application, ...entities },
+            context: { ...application, ...entity },
           });
         }
       },
-    };
+    });
   }
 
-  get [POST_WRITING_PRIORITY]() {
-    return {
-      injectJooqMavenConfigurations({ application: { buildToolMaven, jooqVersion } }) {
+  get [BaseApplicationGenerator.POST_WRITING]() {
+    return this.asPostWritingTaskGroup({
+      adjustLiquibase({ application }) {
+        if (application.devDatabaseTypeH2Any) return;
+
+        this.editFile(`${application.srcMainResources}config/liquibase/master.xml`, content => content.replaceAll('dbms="', 'dbms="h2,'));
+      },
+
+      injectJooqMavenConfigurations({ application: { buildToolMaven, jooqVersion }, source }) {
         if (!buildToolMaven) return;
-        this.addJooqWithMaven(jooqVersion);
-      },
 
-      injectJooqGradleConfigurations({ application: { buildToolGradle, jooqVersion, jooqTargetName } }) {
-        if (!buildToolGradle) return;
-        this.addJooqWithGradle(jooqVersion, jooqTargetName);
-      },
-    };
-  }
+        // eslint-disable-next-line no-template-curly-in-string
+        const jooqPomVersion = '${jooq.version}';
 
-  get [END_PRIORITY]() {
-    return {
-      jooqEnd() {
-        let applicationYmlFile;
-        if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
-          applicationYmlFile = 'application.yml';
-        } else {
-          applicationYmlFile = 'application-prod.yml';
-        }
-        const destinationYml = `${SERVER_MAIN_RES_DIR}config/${applicationYmlFile}`;
-        this.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
-spring:
-  profiles:
-    includes: jooq
-`);
-      },
-    };
-  }
-
-  /**
-   * Adds dependencies, and required files for maven
-   */
-  addJooqWithMaven(jooqVersion) {
-    // eslint-disable-next-line no-template-curly-in-string
-    const jooqPomVersion = '${jooq.version}';
-    this.addMavenProperty('jooq.version', jooqVersion);
-    this.addMavenDependency(
-      'org.springframework.boot',
-      'spring-boot-starter-jooq',
-      undefined,
-      `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
-         <exclusions>
+        source.addMavenProperty({ property: 'jooq.version', value: jooqVersion });
+        source.addMavenDependency([
+          {
+            artifactId: 'spring-boot-starter-jooq',
+            groupId: 'org.springframework.boot',
+            additionalContent: `            <!-- Exclude to synchronize with jooq-meta-extensions version -->
+        <exclusions>
             <exclusion>
                 <groupId>org.jooq</groupId>
                 <artifactId>*</artifactId>
             </exclusion>
-        </exclusions>`
-    );
+        </exclusions>`,
+          },
+          { groupId, artifactId: 'jooq', version: jooqPomVersion },
+          { groupId, artifactId: 'jooq-meta', version: jooqPomVersion },
+          { groupId, artifactId: 'jooq-meta-extensions-liquibase', version: jooqPomVersion },
+        ]);
 
-    this.addMavenDependency('org.jooq', 'jooq', jooqPomVersion);
-    this.addMavenDependency('org.jooq', 'jooq-meta', jooqPomVersion);
-    this.addMavenDependency('org.jooq', 'jooq-meta-extensions-liquibase', jooqPomVersion);
-
-    this.addMavenPlugin('org.jooq', 'jooq-codegen-maven');
-
-    this.addMavenPluginManagement(
-      'org.jooq',
-      'jooq-codegen-maven',
-      jooqPomVersion,
-      `                    <configuration>
+        source.addMavenPlugin({ groupId, artifactId: 'jooq-codegen-maven' });
+        source.addMavenPluginManagement({
+          groupId,
+          artifactId: 'jooq-codegen-maven',
+          version: jooqPomVersion,
+          additionalContent: `                    <configuration>
                     <configurationFile>jooq.xml</configurationFile>
                 </configuration>
                 <dependencies>
@@ -198,63 +189,39 @@ spring:
                             <goal>generate</goal>
                         </goals>
                     </execution>
-                </executions>`
-    );
+                </executions>`,
+        });
+      },
+
+      injectJooqGradleConfigurations({ application: { buildToolGradle, jooqVersion, javaDependencies }, source }) {
+        if (!buildToolGradle) return;
+
+        source.addGradlePlugin({
+          id: 'nu.studer.jooq',
+          version: this.blueprintConfig.jooqGradlePluginVersion ?? javaDependencies['jooq-gradle-plugin'],
+        });
+
+        this.editFile('build.gradle', content => `${content}\napply from: "gradle/jooq.gradle"\n`);
+      },
+    });
   }
 
-  /**
-   * Adds dependencies, and required files for gradle
-   */
-  addJooqWithGradle(jooqVersion, jooqTargetName) {
-    this.addGradlePluginToPluginsBlock(
-      'nu.studer.jooq',
-      this.blueprintConfig.jooqGradlePluginVersion || DEFAULT_JOOQ_GRADLE_PLUGIN_VERSION
-    );
-    this.addGradleDependency('jooqGenerator', 'org.jooq', 'jooq-meta-extensions-liquibase', jooqVersion);
-
-    const rewriteFileModel = this.needleApi.serverGradle.generateFileModelWithPath(
-      '.',
-      'build.gradle',
-      'jhipster-needle-gradle-dependency',
-      'jooqGenerator files("src/main/resources")'
-    );
-    this.needleApi.serverGradle.addBlockContentToFile(rewriteFileModel, 'Error adding jOOQ dependency.');
-
-    this.fs.append(
-      this.destinationPath('build.gradle'),
-      `
-// START OF CONFIGURATION ADDED BY JOOQ BLUEPRINT
-jooq {
-version = '${jooqVersion}'  // the default (can be omitted)
-edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
-
-configurations {
-    main {  // name of the jOOQ configuration
-        generationTool {
-            generator {
-                database {
-                    name = 'org.jooq.meta.extensions.liquibase.LiquibaseDatabase'
-                    properties {
-                        property {
-                            key = 'scripts'
-                            value = 'config/liquibase/master.xml'
-                        }
-                        property {
-                            key = 'changeLogParameters.contexts'
-                            value = 'prod'
-                        }
-                    }
-                }
-                target {
-                    packageName = '${jooqTargetName}'
-                }
-            }
+  get [BaseApplicationGenerator.END]() {
+    return this.asEndTaskGroup({
+      jooqEnd({ application }) {
+        let applicationYmlFile;
+        if (this.jhipsterConfig.prodDatabaseType === this.jhipsterConfig.devDatabaseType) {
+          applicationYmlFile = 'application.yml';
+        } else {
+          applicationYmlFile = 'application-prod.yml';
         }
-    }
-}
-}
-// END OF CONFIGURATION ADDED BY JOOQ BLUEPRINT
-`
-    );
+        const destinationYml = `${application.srcMainResources}config/${applicationYmlFile}`;
+        this.log.info(`If you want to enable jOOQ dialects append to ${destinationYml}:
+spring:
+  profiles:
+    includes: jooq
+`);
+      },
+    });
   }
 }

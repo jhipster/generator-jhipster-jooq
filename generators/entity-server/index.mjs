@@ -31,7 +31,7 @@ export default class JooqEntityGenerator extends EntityServerGenerator {
 
     if (!this.entity) {
       throw new Error(
-        `This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint generator-jhipster-jooq')}`
+        `This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint generator-jhipster-jooq')}`,
       );
     }
 

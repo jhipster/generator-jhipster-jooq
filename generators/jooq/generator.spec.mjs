@@ -1,23 +1,33 @@
-import { expect } from 'expect';
+import { beforeAll, describe, expect, it } from 'vitest';
 
-import { helpers, lookups } from '#test-utils';
+import { defaultHelpers as helpers, result } from 'generator-jhipster/testing';
 
 const SUB_GENERATOR = 'jooq';
 const SUB_GENERATOR_NAMESPACE = `jhipster-jooq:${SUB_GENERATOR}`;
 
 describe('SubGenerator jooq of jooq JHipster blueprint', () => {
   describe('run', () => {
-    let result;
-    before(async function () {
-      result = await helpers
-        .create(SUB_GENERATOR_NAMESPACE)
+    beforeAll(async function () {
+      await helpers
+        .run(SUB_GENERATOR_NAMESPACE)
+        .withJHipsterConfig({}, [
+          {
+            name: 'EntityA',
+            changelogDate: '20220129025419',
+            jooq: true,
+            fields: [
+              {
+                fieldName: 'name',
+                fieldType: 'String',
+              },
+            ],
+          },
+        ])
         .withOptions({
-          reproducible: true,
-          defaults: true,
-          baseName: 'jhipster',
+          ignoreNeedlesError: true,
         })
-        .withLookups(lookups)
-        .run();
+        .withJHipsterLookup()
+        .withParentBlueprintLookup();
     });
 
     it('should succeed', () => {
@@ -45,6 +55,52 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
       result.assertFileContent('pom.xml', '<artifactId>jooq-codegen-maven</artifactId>');
       result.assertFileContent('pom.xml', '<artifactId>jooq</artifactId>');
       result.assertFileContent('pom.xml', '<artifactId>jooq-meta-extensions-liquibase</artifactId>');
+    });
+  });
+
+  describe('with gradle', () => {
+    beforeAll(async function () {
+      await helpers
+        .run(SUB_GENERATOR_NAMESPACE)
+        .withJHipsterConfig(
+          {
+            buildTool: 'gradle',
+          },
+          [
+            {
+              name: 'EntityA',
+              changelogDate: '20220129025419',
+              jooq: true,
+              fields: [
+                {
+                  fieldName: 'name',
+                  fieldType: 'String',
+                },
+              ],
+            },
+          ],
+        )
+        .withOptions({
+          ignoreNeedlesError: true,
+        })
+        .withJHipsterLookup()
+        .withParentBlueprintLookup();
+    });
+
+    it('should succeed', () => {
+      expect(result.getStateSnapshot()).toMatchSnapshot();
+    });
+
+    it('writes README', () => {
+      result.assertFile('README.jooq.md');
+    });
+
+    it('writes gradle/jooq.gradle', () => {
+      result.assertFile('gradle/jooq.gradle');
+    });
+
+    it('writes application-jooq.yml', () => {
+      result.assertFile('src/main/resources/config/application-jooq.yml');
     });
   });
 });
