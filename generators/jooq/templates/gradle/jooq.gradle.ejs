@@ -1,6 +1,15 @@
+dependencies {
+  implementation("org.springframework.boot:spring-boot-starter-jooq") {
+    exclude group: "org.jooq", module: "*"
+  }
+
+  jooqGenerator "org.jooq:jooq-meta-extensions-liquibase:<%- jooqVersion %>"
+  jooqGenerator files("src/main/resources")
+}
+
 jooq {
   version = '<%- jooqVersion %>'  // the default (can be omitted)
-  edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
+  // edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 
   configurations {
     main {  // name of the jOOQ configuration

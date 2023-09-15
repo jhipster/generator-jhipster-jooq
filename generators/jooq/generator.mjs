@@ -201,22 +201,7 @@ export default class extends BaseApplicationGenerator {
           version: this.blueprintConfig.jooqGradlePluginVersion ?? javaDependencies['jooq-gradle-plugin'],
         });
 
-        source.addGradleDependency({
-          groupId,
-          artifactId: 'jooq-meta-extensions-liquibase',
-          scope: 'jooqGenerator',
-          version: jooqVersion,
-        });
-
-        source.applyFromGradle({ script: 'gradle/jooq.gradle' });
-
-        this.editFile(
-          'build.gradle',
-          createNeedleCallback({
-            contentToAdd: 'jooqGenerator files("src/main/resources")',
-            needle: 'jhipster-needle-gradle-dependency',
-          }),
-        );
+        this.editFile('build.gradle', content => `${content}\napply from: "gradle/jooq.gradle"\n`);
       },
     });
   }
