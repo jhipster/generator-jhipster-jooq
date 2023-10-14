@@ -123,8 +123,8 @@ export default class extends BaseApplicationGenerator {
           this.writeFiles({
             blocks: [
               {
-                ...javaMainPackageTemplatesBlock(),
-                templates: ['repository/_EntityClass_JOOQRepositoryImpl.java', 'repository/_EntityClass_JOOQRepository.java'],
+                ...javaMainPackageTemplatesBlock('_entityPackage_/'),
+                templates: ['repository/_entityClass_JOOQRepositoryImpl.java', 'repository/_entityClass_JOOQRepository.java'],
               },
             ],
             context: { ...application, ...entity },

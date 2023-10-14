@@ -1,11 +1,6 @@
 {
   "generator-jhipster": {
     "additionalSubGenerators": "jooq",
-    "app": {
-      "command": false,
-      "priorities": [],
-      "sbs": true
-    },
     "baseName": "jooq",
     "cli": true,
     "entities": [],
@@ -33,6 +28,6 @@
       "sbs": true
     },
     "skipCommitHook": true,
-    "subGenerators": ["app", "server"]
+    "subGenerators": ["server"]
   }
 }
