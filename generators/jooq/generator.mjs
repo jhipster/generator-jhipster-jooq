@@ -1,9 +1,8 @@
 import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
-import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 import { getPomVersionProperties, getGradleLibsVersionsProperties } from 'generator-jhipster/generators/server/support';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
-import { TEMPLATES_MAIN_RESOURCES_DIR, TEMPLATES_MAIN_SOURCES_DIR } from 'generator-jhipster';
+import { TEMPLATES_MAIN_RESOURCES_DIR } from 'generator-jhipster';
 import command from './command.mjs';
 
 const groupId = 'org.jooq';
@@ -54,13 +53,15 @@ export default class extends BaseApplicationGenerator {
     return this.asPreparingTaskGroup({
       preparingJooq({ application }) {
         const { packageName, prodDatabaseType } = application;
-        const { jooqVersion } = this.blueprintConfig;
+        const { jooqVersion = application.javaDependencies.jooq } = this.blueprintConfig;
 
-        application.jooqVersion = jooqVersion ?? application.javaDependencies.jooq;
+        application.jooqVersion = jooqVersion;
         application.jooqTargetName = `${packageName}.jooq`;
         application.jooqDialect = JOOQ_FAMILY_MAPPING[prodDatabaseType] || '';
+        // Add liquibase h2 database references.
+        application.liquibaseAddH2Properties = true;
 
-        this.log.info(`Using jOOQ version ${this.jooqVersion}.`);
+        this.log.info(`Using jOOQ version ${jooqVersion}.`);
       },
     });
   }
@@ -136,12 +137,6 @@ export default class extends BaseApplicationGenerator {
 
   get [BaseApplicationGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
-      adjustLiquibase({ application }) {
-        if (application.devDatabaseTypeH2Any) return;
-
-        this.editFile(`${application.srcMainResources}config/liquibase/master.xml`, content => content.replaceAll('dbms="', 'dbms="h2,'));
-      },
-
       injectJooqMavenConfigurations({ application: { buildToolMaven, jooqVersion }, source }) {
         if (!buildToolMaven) return;
 
