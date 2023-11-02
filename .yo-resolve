@@ -1,5 +1,1 @@
-generators/jooq/generator.mjs skip
-generators/jooq/index.mjs skip
-generators/server/generator.mjs skip
-generators/jooq/generator.spec.mjs skip
-generators/server/command.mjs skip
+!package.json skip

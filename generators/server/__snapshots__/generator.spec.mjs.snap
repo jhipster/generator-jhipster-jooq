@@ -20,7 +20,7 @@ exports[`SubGenerator server of jooq JHipster blueprint > run > should succeed 1
   ".husky/pre-commit": {
     "stateCleared": "modified",
   },
-  ".lintstagedrc.js": {
+  ".lintstagedrc.cjs": {
     "stateCleared": "modified",
   },
   ".mvn/jvm.config": {

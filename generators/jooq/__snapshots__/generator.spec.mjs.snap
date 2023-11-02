@@ -23,7 +23,7 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
   ".jhipster/EntityA.json": {
     "stateCleared": "modified",
   },
-  ".lintstagedrc.js": {
+  ".lintstagedrc.cjs": {
     "stateCleared": "modified",
   },
   ".mvn/jvm.config": {
@@ -530,6 +530,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
   "src/test/java/com/mycompany/myapp/domain/EntityATest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/domain/EntityATestSamples.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/management/SecurityMetersServiceTests.java": {
     "stateCleared": "modified",
   },
@@ -658,7 +661,7 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   ".jhipster/EntityA.json": {
     "stateCleared": "modified",
   },
-  ".lintstagedrc.js": {
+  ".lintstagedrc.cjs": {
     "stateCleared": "modified",
   },
   ".prettierignore": {
@@ -1190,6 +1193,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/EntityATest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/EntityATestSamples.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/management/SecurityMetersServiceTests.java": {
