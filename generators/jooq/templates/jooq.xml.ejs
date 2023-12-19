@@ -8,10 +8,13 @@
       <properties>
         <!-- Specify the location of your XML script. -->
         <property>
+          <key>rootPath</key>
+          <value>src/main/resources</value>
+        </property>
+        <property>
           <key>scripts</key>
           <value>config/liquibase/master.xml</value>
         </property>
-
         <!-- The property "changeLogParameters.contexts" will be passed on to the
              liquibase.database.Database.update() call (jOOQ 3.13.2+).
              See https://www.liquibase.org/documentation/contexts.html -->
