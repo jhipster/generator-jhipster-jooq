@@ -3,7 +3,9 @@ application {
     applicationType monolith
     cacheProvider no
     creationTimestamp 1632872179205
+    devDatabaseType h2Disk
     testFrameworks [cypress]
+    prodDatabaseType postgresql
   }
 
   entities Blog, Post, Tag
