@@ -135,11 +135,13 @@ jobs:
       - name: Backend test
         if: ${{ steps.backend_info.outcome == 'success' && always() }}
         run: npm run ci:backend:test
+        timeout-minutes: 10
 
       - name: E2E Packaging
         if: ${{ steps.app.outcome == 'success' && always() }}
         run: npm run ci:e2e:package
         id: packaging
+        timeout-minutes: 5
 
       - name: E2E Prepare
         if: ${{ steps.packaging.outcome == 'success' && always() }}
@@ -149,6 +151,7 @@ jobs:
       - name: End-to-End
         if: ${{ steps.packaging.outcome == 'success' && always() }}
         run: npm run ci:e2e:run
+        timeout-minutes: 10
 
       - name: Create application archive
         if: always() && github.event.inputs.storeApplication != ''
