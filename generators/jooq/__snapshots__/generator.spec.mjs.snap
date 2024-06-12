@@ -152,9 +152,6 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/LocaleConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/LoggingAspectConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -284,6 +281,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
   "src/main/java/com/mycompany/myapp/web/rest/AuthenticateController.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/web/rest/AuthorityResource.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/web/rest/EntityAResource.java": {
     "stateCleared": "modified",
   },
@@ -398,6 +398,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
   "src/main/webapp/i18n/en/activate.json": {
     "stateCleared": "modified",
   },
+  "src/main/webapp/i18n/en/adminAuthority.json": {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/i18n/en/configuration.json": {
     "stateCleared": "modified",
   },
@@ -452,6 +455,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/config/CRLFLogConverterTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
     "stateCleared": "modified",
   },
@@ -477,6 +483,21 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/timezone/HibernateTimeZoneIT.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AuthorityAsserts.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AuthorityTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AuthorityTestSamples.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/EntityAAsserts.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/EntityATest.java": {
@@ -528,6 +549,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > run > should succeed 1`]
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/rest/AuthenticateControllerIT.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/rest/AuthorityResourceIT.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/rest/EntityAResourceIT.java": {
@@ -631,19 +655,34 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   "build.gradle": {
     "stateCleared": "modified",
   },
+  "buildSrc/build.gradle": {
+    "stateCleared": "modified",
+  },
+  "buildSrc/gradle/libs.versions.toml": {
+    "stateCleared": "modified",
+  },
+  "buildSrc/src/main/groovy/jhipster.code-quality-conventions.gradle": {
+    "stateCleared": "modified",
+  },
+  "buildSrc/src/main/groovy/jhipster.docker-conventions.gradle": {
+    "stateCleared": "modified",
+  },
+  "buildSrc/src/main/groovy/jhipster.node-gradle-conventions.gradle": {
+    "stateCleared": "modified",
+  },
+  "buildSrc/src/main/groovy/jhipster.spring-cache-conventions.gradle": {
+    "stateCleared": "modified",
+  },
   "checkstyle.xml": {
     "stateCleared": "modified",
   },
   "gradle.properties": {
     "stateCleared": "modified",
   },
-  "gradle/cache.gradle": {
-    "stateCleared": "modified",
-  },
-  "gradle/docker.gradle": {
-    "stateCleared": "modified",
-  },
   "gradle/jooq.gradle": {
+    "stateCleared": "modified",
+  },
+  "gradle/libs.versions.toml": {
     "stateCleared": "modified",
   },
   "gradle/liquibase.gradle": {
@@ -653,9 +692,6 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
     "stateCleared": "modified",
   },
   "gradle/profile_prod.gradle": {
-    "stateCleared": "modified",
-  },
-  "gradle/sonar.gradle": {
     "stateCleared": "modified",
   },
   "gradle/war.gradle": {
@@ -766,9 +802,6 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/LocaleConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/LoggingAspectConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -898,6 +931,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   "src/main/java/com/mycompany/myapp/web/rest/AuthenticateController.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/web/rest/AuthorityResource.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/web/rest/EntityAResource.java": {
     "stateCleared": "modified",
   },
@@ -1012,6 +1048,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   "src/main/webapp/i18n/en/activate.json": {
     "stateCleared": "modified",
   },
+  "src/main/webapp/i18n/en/adminAuthority.json": {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/i18n/en/configuration.json": {
     "stateCleared": "modified",
   },
@@ -1066,6 +1105,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/config/CRLFLogConverterTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
     "stateCleared": "modified",
   },
@@ -1091,6 +1133,21 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/timezone/HibernateTimeZoneIT.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AuthorityAsserts.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AuthorityTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/AuthorityTestSamples.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/domain/EntityAAsserts.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/EntityATest.java": {
@@ -1142,6 +1199,9 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/rest/AuthenticateControllerIT.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/rest/AuthorityResourceIT.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/rest/EntityAResourceIT.java": {

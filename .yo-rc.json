@@ -18,6 +18,7 @@
         "written": true
       }
     },
+    "githubWorkflows": true,
     "jhipsterVersion": "7.1.0",
     "localBlueprint": false,
     "projectName": "JHipster project",
