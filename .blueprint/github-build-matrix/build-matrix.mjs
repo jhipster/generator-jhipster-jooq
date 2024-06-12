@@ -9,14 +9,17 @@ const defaultMatrix = {
   'default-environment': ['prod'],
 };
 
-export const buildMatrix = async samplesFolder => {
-  const samples = await readdir(samplesFolder);
+export const buildMatrix = ({ samples, samplesFolder }) => {
   return {
     include: Object.values(
       fromMatrix({
         ...defaultMatrix,
-        'sample-name': samples.filter(sample => !sample.includes('disabled')),
+        'sample-name': samples,
       }),
-    ),
+    ).map(sample => ({
+      ...sample,
+      'job-name': sample['sample-name'],
+      'extra-args': `--samples-folder ${samplesFolder}`,
+    })),
   };
 };

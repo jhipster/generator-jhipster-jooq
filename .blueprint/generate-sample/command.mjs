@@ -18,6 +18,7 @@
  */
 import { readdir } from 'node:fs/promises';
 import { GENERATOR_APP } from 'generator-jhipster/generators';
+import { getSamples } from './get-samples.mjs';
 
 /**
  * @type {import('generator-jhipster').JHipsterCommandDefinition}
@@ -34,7 +35,7 @@ const command = {
         when: !gen.all,
         type: 'list',
         message: 'which sample do you want to generate?',
-        choices: async () => readdir(gen.templatePath('samples')),
+        choices: async () => getSamples(gen.templatePath(gen.samplesFolder)),
       }),
       scope: 'generator',
     },
@@ -43,6 +44,14 @@ const command = {
       cli: {
         type: Boolean,
       },
+      scope: 'generator',
+    },
+    samplesFolder: {
+      description: 'Path to the samples folder',
+      cli: {
+        type: String,
+      },
+      default: 'samples',
       scope: 'generator',
     },
   },
