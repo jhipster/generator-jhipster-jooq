@@ -1,5 +1,5 @@
 import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
-import { getPomVersionProperties, getGradleLibsVersionsProperties } from 'generator-jhipster/generators/server/support';
+import { getGradleLibsVersionsProperties, getPomVersionProperties } from 'generator-jhipster/generators/server/support';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
 import { TEMPLATES_MAIN_RESOURCES_DIR } from 'generator-jhipster';
@@ -140,7 +140,6 @@ export default class extends BaseApplicationGenerator {
       injectJooqMavenConfigurations({ application: { buildToolMaven, jooqVersion }, source }) {
         if (!buildToolMaven) return;
 
-        // eslint-disable-next-line no-template-curly-in-string
         const jooqPomVersion = '${jooq.version}';
 
         source.addMavenProperty({ property: 'jooq.version', value: jooqVersion });

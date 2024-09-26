@@ -1,7 +1,6 @@
-/**
- * @type {import('generator-jhipster').JHipsterCommandDefinition}
- */
-const command = {
+import { asCommand } from 'generator-jhipster';
+
+export default asCommand({
   options: {
     jooqVersion: {
       description: 'Use jOOQ version',
@@ -19,6 +18,4 @@ const command = {
       scope: 'blueprint',
     },
   },
-};
-
-export default command;
+});

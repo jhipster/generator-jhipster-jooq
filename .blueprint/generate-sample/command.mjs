@@ -16,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { readdir } from 'node:fs/promises';
 import { GENERATOR_APP } from 'generator-jhipster/generators';
 import { getSamples } from './get-samples.mjs';
 
