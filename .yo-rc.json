@@ -2,6 +2,7 @@
   "generator-jhipster": {
     "additionalSubGenerators": "jooq",
     "baseName": "jooq",
+    "caret": true,
     "cli": true,
     "entities": [],
     "generators": {
