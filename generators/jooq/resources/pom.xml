@@ -8,7 +8,7 @@
 
     <properties>
         <!-- Dependency versions -->
-        <jooq.version>3.19.2</jooq.version>
+        <jooq.version>3.19.12</jooq.version>
     </properties>
 
     <dependencyManagement>
