@@ -1,5 +1,3 @@
-import { readdir } from 'node:fs/promises';
-
 /**
  * @type {import('generator-jhipster').JHipsterCommandDefinition}
  */
