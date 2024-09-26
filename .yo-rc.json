@@ -20,6 +20,7 @@
     },
     "githubWorkflows": true,
     "jhipsterVersion": "7.1.0",
+    "js": false,
     "localBlueprint": false,
     "projectName": "JHipster project",
     "sampleWritten": true,
