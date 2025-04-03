@@ -24,6 +24,8 @@ updates:
     schedule:
       interval: 'daily'
       time: '12:00'
-    labels:
-      - 'theme: dependencies'
-      - 'theme: java'
+  - package-ecosystem: 'gradle'
+    directory: '/generators/jooq/resources/'
+    schedule:
+      interval: 'daily'
+      time: '08:00'
