@@ -1,6 +1,6 @@
 {
   "name": "generator-jhipster-jooq",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "jOOQ blueprint for JHipster",
   "keywords": [
     "yeoman-generator",
