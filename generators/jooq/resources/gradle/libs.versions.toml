@@ -1,2 +1,2 @@
 [plugins]
-jooq-gradle-plugin = { id = 'nu.studer.jooq', version = '9.0' }
+jooq-gradle-plugin = { id = 'nu.studer.jooq', version = '10.1' }
