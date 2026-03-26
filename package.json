@@ -5,7 +5,7 @@
   "keywords": [
     "yeoman-generator",
     "jhipster-blueprint",
-    "jhipster-8"
+    "jhipster-9"
   ],
   "homepage": "https://github.com/jhipster/generator-jhipster-jooq",
   "bugs": {
@@ -51,7 +51,7 @@
     "vitest": "vitest"
   },
   "dependencies": {
-    "generator-jhipster": "8.11.0"
+    "generator-jhipster": "9.0.0-beta.3"
   },
   "devDependencies": {
     "ejs-lint": "2.0.1",
@@ -65,8 +65,8 @@
     "yeoman-test": ">=8.2.0"
   },
   "engines": {
-    "generator-jhipster": "^8.11.0",
-    "node": "^18.19.0 || >= 20.6.1"
+    "generator-jhipster": "^9.0.0-beta.3",
+    "node": "^22.18.0 || >=24.11.0"
   },
   "cacheDirectories": [
     "node_modules"

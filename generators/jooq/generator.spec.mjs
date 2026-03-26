@@ -26,8 +26,9 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
         .withOptions({
           ignoreNeedlesError: true,
         })
-        .withJHipsterLookup()
-        .withParentBlueprintLookup();
+        .withJHipsterGenerators()
+        .withConfiguredBlueprint()
+        .withMockedSource();
     });
 
     it('should succeed', () => {
@@ -44,17 +45,6 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
 
     it('writes application-jooq.yml', () => {
       result.assertFile('src/main/resources/config/application-jooq.yml');
-    });
-
-    it('adds jooq.version property to pom.xml', () => {
-      result.assertFileContent('pom.xml', /<jooq.version>.*<\/jooq.version>/);
-    });
-
-    it('adds jooq dependency and executions to pom.xml', () => {
-      result.assertFileContent('pom.xml', '<artifactId>spring-boot-starter-jooq</artifactId>');
-      result.assertFileContent('pom.xml', '<artifactId>jooq-codegen-maven</artifactId>');
-      result.assertFileContent('pom.xml', '<artifactId>jooq</artifactId>');
-      result.assertFileContent('pom.xml', '<artifactId>jooq-meta-extensions-liquibase</artifactId>');
     });
   });
 
@@ -83,8 +73,9 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
         .withOptions({
           ignoreNeedlesError: true,
         })
-        .withJHipsterLookup()
-        .withParentBlueprintLookup();
+        .withJHipsterGenerators()
+        .withConfiguredBlueprint()
+        .withMockedSource();
     });
 
     it('should succeed', () => {

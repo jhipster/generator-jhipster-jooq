@@ -20,7 +20,6 @@ npm-debug.log.*
 .project
 .metadata
 tmp/
-tmp/**/*
 *.tmp
 *.bak
 *.swp
@@ -81,6 +80,7 @@ out/
 /build/
 /buildSrc/.gradle/
 /buildSrc/build/
+/dist/
 
 ######################
 # Package Files

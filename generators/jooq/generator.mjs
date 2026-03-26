@@ -1,9 +1,8 @@
-import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
-import { getGradleLibsVersionsProperties, getPomVersionProperties } from 'generator-jhipster/generators/server/support';
-import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
-
 import { TEMPLATES_MAIN_RESOURCES_DIR } from 'generator-jhipster';
-import command from './command.mjs';
+import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
+import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
+import { getGradleLibsVersionsProperties } from 'generator-jhipster/generators/java-simple-application/generators/gradle/support';
+import { getPomVersionProperties } from 'generator-jhipster/generators/java-simple-application/generators/maven/support';
 
 const groupId = 'org.jooq';
 
@@ -14,18 +13,13 @@ const JOOQ_FAMILY_MAPPING = {
 };
 
 export default class extends BaseApplicationGenerator {
-  async beforeQueue() {
-    await this.dependsOnJHipster('bootstrap-application');
-    await this.dependsOnJHipster('server');
+  constructor(args, opts, features) {
+    super(args, opts, { ...features, queueCommandTasks: true });
   }
 
-  get [BaseApplicationGenerator.INITIALIZING]() {
-    return this.asInitializingTaskGroup({
-      async initializingTemplateTask() {
-        this.parseJHipsterArguments(command.arguments);
-        this.parseJHipsterOptions(command.options);
-      },
-    });
+  async beforeQueue() {
+    await this.dependsOnBootstrap('app');
+    await this.dependsOnBootstrap('server');
   }
 
   get [BaseApplicationGenerator.LOADING]() {
@@ -34,6 +28,7 @@ export default class extends BaseApplicationGenerator {
         const pomFile = this.readTemplate(this.templatePath('../resources/pom.xml'));
         const gradleLibsVersions = this.readTemplate(this.templatePath('../resources/gradle/libs.versions.toml'))?.toString();
 
+        application.javaDependencies ??= {};
         Object.assign(
           application.javaDependencies,
           this.prepareDependencies(
@@ -187,7 +182,7 @@ export default class extends BaseApplicationGenerator {
         });
       },
 
-      injectJooqGradleConfigurations({ application: { buildToolGradle, jooqVersion, javaDependencies }, source }) {
+      injectJooqGradleConfigurations({ application: { buildToolGradle, javaDependencies }, source }) {
         if (!buildToolGradle) return;
 
         source.addGradlePlugin({

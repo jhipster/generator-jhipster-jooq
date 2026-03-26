@@ -1,8 +1,9 @@
-import { readdir } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
+import { readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
+
+import { getGithubSamplesGroup } from 'generator-jhipster/ci';
 import BaseGenerator from 'generator-jhipster/generators/base';
-import { getGithubSamplesGroup } from 'generator-jhipster/testing';
 
 export default class extends BaseGenerator {
   /** @type {string | undefined} */
@@ -42,14 +43,18 @@ export default class extends BaseGenerator {
             'sample-file': sampleFile = sampleName,
             'sample-folder': sampleFolder = samplesPath,
             generatorOptions,
+            templateOptions = {},
           } = samples[sampleName];
 
           this.generatorOptions = generatorOptions;
-          this.sampleType = sampleType;
+          this.sampleType = sampleType === 'jdl-ejs' ? 'jdl' : sampleType;
 
           if (sampleType === 'jdl') {
             const jdlFile = `${sampleFile}.jdl`;
             this.copyTemplate(join(sampleFolder, jdlFile), jdlFile, { noGlob: true });
+          } else if (sampleType === 'jdl-ejs') {
+            const jdlFile = `${sampleFile}.jdl`;
+            this.renderTemplate(join(sampleFolder, `${jdlFile}.ejs`), jdlFile, templateOptions, undefined, { noGlob: true });
           } else if (sampleType === 'yo-rc') {
             this.copyTemplate('**', '', {
               fromBasePath: this.templatePath(sampleFolder, sampleFile),
