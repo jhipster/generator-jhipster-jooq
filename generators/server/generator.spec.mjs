@@ -13,10 +13,10 @@ describe('SubGenerator server of jooq JHipster blueprint', () => {
         .withJHipsterConfig()
         .withOptions({
           ignoreNeedlesError: true,
-          blueprint: ['jooq'],
         })
-        .withJHipsterLookup()
-        .withParentBlueprintLookup();
+        .withJHipsterGenerators()
+        .withConfiguredBlueprint()
+        .withBlueprintConfig();
     });
 
     it('should succeed', () => {

@@ -1,7 +1,7 @@
 import { asCommand } from 'generator-jhipster';
 
 export default asCommand({
-  options: {
+  configs: {
     jooqVersion: {
       description: 'Use jOOQ version',
       type: String,
