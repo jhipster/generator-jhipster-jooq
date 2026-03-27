@@ -26,8 +26,9 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
         .withOptions({
           ignoreNeedlesError: true,
         })
-        .withJHipsterLookup()
-        .withParentBlueprintLookup();
+        .withJHipsterGenerators()
+        .withConfiguredBlueprint()
+        .withBlueprintConfig();
     });
 
     it('should succeed', () => {
@@ -83,8 +84,9 @@ describe('SubGenerator jooq of jooq JHipster blueprint', () => {
         .withOptions({
           ignoreNeedlesError: true,
         })
-        .withJHipsterLookup()
-        .withParentBlueprintLookup();
+        .withJHipsterGenerators()
+        .withConfiguredBlueprint()
+        .withBlueprintConfig();
     });
 
     it('should succeed', () => {
