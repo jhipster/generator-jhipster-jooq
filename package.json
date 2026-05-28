@@ -36,11 +36,11 @@
     "generators",
     "!**/__*",
     "!**/*.snap",
-    "!**/*.spec.?(c|m)js"
+    "!**/*.spec.?(c|m)?(j|t)s"
   ],
   "scripts": {
     "ejslint": "ejslint generators/**/*.ejs",
-    "lint": "eslint .",
+    "lint": "eslint",
     "lint-fix": "npm run ejslint && npm run lint -- --fix",
     "mocha": "mocha generators --no-insight --forbid-only",
     "prepare": "husky",
@@ -52,7 +52,7 @@
     "vitest": "vitest"
   },
   "dependencies": {
-    "generator-jhipster": "9.0.0"
+    "generator-jhipster": "9.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.1",
@@ -61,16 +61,16 @@
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "globals": "17.4.0",
+    "globals": "17.6.0",
     "husky": "^9.1.7",
-    "jiti": "2.6.1",
-    "prettier": "3.8.1",
+    "jiti": "2.7.0",
+    "prettier": "3.8.3",
     "prettier-plugin-packagejson": "3.0.2",
-    "vitest": "4.1.1",
+    "vitest": "4.1.7",
     "yeoman-test": ">=10"
   },
   "engines": {
-    "generator-jhipster": "^9.0.0",
+    "generator-jhipster": "^9.1.0",
     "node": "^22.18.0 || >=24.11.0"
   },
   "cacheDirectories": [
