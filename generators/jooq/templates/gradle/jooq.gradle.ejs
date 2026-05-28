@@ -13,7 +13,26 @@ dependencies {
 }
 
 jooq {
-  configuration(file("jooq.xml"))
+  configuration {
+    generator {
+      database {
+        name = 'org.jooq.meta.extensions.liquibase.LiquibaseDatabase'
+        properties {
+          property {
+            key = 'scripts'
+            value = 'config/liquibase/master.xml'
+          }
+          property {
+            key = 'changeLogParameters.contexts'
+            value = 'prod'
+          }
+        }
+      }
+      target {
+        packageName = '<%- jooqTargetName %>'
+      }
+    }
+  }
 }
 
 sourceSets {
