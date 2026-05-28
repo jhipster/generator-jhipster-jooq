@@ -1,9 +1,13 @@
+def jooqVersion = libs.versions.jooq.get().toString()
+
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jooq") {
     exclude group: "org.jooq", module: "*"
   }
 
-  jooqGenerator "org.jooq:jooq-meta-extensions-liquibase:<%- jooqVersion %>"
+  jooqGenerator "org.jooq:jooq-codegen:${jooqVersion}"
+  jooqGenerator "org.jooq:jooq-meta:${jooqVersion}"
+  jooqGenerator "org.jooq:jooq-meta-extensions-liquibase:${jooqVersion}"
   jooqGenerator files("src/main/resources")
 }
 
