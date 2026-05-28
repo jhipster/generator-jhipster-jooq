@@ -35,12 +35,4 @@ jooq {
   }
 }
 
-sourceSets {
-  main {
-    java {
-      srcDir 'build/generated-src/jooq'
-    }
-  }
-}
-
 compileJava.dependsOn jooqCodegen
