@@ -11,32 +11,8 @@ dependencies {
   jooqGenerator files("src/main/resources")
 }
 
-jooq {
-  version = '<%- jooqVersion %>'  // the default (can be omitted)
-  // edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
+compileJava.dependsOn jooqGenerate
 
-  configurations {
-    main {  // name of the jOOQ configuration
-      generationTool {
-        generator {
-          database {
-            name = 'org.jooq.meta.extensions.liquibase.LiquibaseDatabase'
-            properties {
-              property {
-                key = 'scripts'
-                value = 'config/liquibase/master.xml'
-              }
-              property {
-                key = 'changeLogParameters.contexts'
-                value = 'prod'
-              }
-            }
-          }
-          target {
-            packageName = '<%- jooqTargetName %>'
-          }
-        }
-      }
-    }
-  }
+jooq {
+  configurationFile.set(file("jooq.xml"))
 }

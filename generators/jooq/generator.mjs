@@ -22,14 +22,12 @@ export default class extends BaseApplicationGenerator {
     return this.asLoadingTaskGroup({
       async loading({ application }) {
         const pomFile = this.readTemplate(this.templatePath('../resources/pom.xml'));
-        const gradleLibsVersions = this.readTemplate(this.templatePath('../resources/gradle/libs.versions.toml'))?.toString();
 
         Object.assign(
           application.javaDependencies,
           this.prepareDependencies(
             {
               ...getPomVersionProperties(pomFile),
-              ...getGradleLibsVersionsProperties(gradleLibsVersions),
             },
             // Gradle doesn't allows snakeCase
             value => `'${this._.kebabCase(value).toUpperCase()}-VERSION'`,
@@ -85,16 +83,12 @@ export default class extends BaseApplicationGenerator {
         this.writeFiles({
           blocks: [
             {
-              templates: ['README.jooq.md', `${TEMPLATES_MAIN_RESOURCES_DIR}config/application-jooq.yml`],
+              templates: ['README.jooq.md', 'jooq.xml', `${TEMPLATES_MAIN_RESOURCES_DIR}config/application-jooq.yml`],
             },
             {
               ...javaMainPackageTemplatesBlock(),
               condition: ctx => ctx.reactive,
               templates: ['config/jOOQConfig.java'],
-            },
-            {
-              condition: ctx => ctx.buildToolMaven,
-              templates: ['jooq.xml'],
             },
             {
               condition: ctx => ctx.buildToolGradle,
@@ -185,8 +179,8 @@ export default class extends BaseApplicationGenerator {
         source.addGradleDependencyCatalogPlugin({
           addToBuild: true,
           pluginName: 'jooq-gradle',
-          id: 'nu.studer.jooq',
-          version: this.blueprintConfig.jooqGradlePluginVersion ?? javaDependencies['jooq-gradle-plugin'],
+          id: 'org.jooq.jooq-codegen-gradle',
+          version: jooqVersion,
         });
 
         source.addGradleDependencyCatalogVersion({ name: 'jooq', version: jooqVersion });
@@ -196,8 +190,7 @@ export default class extends BaseApplicationGenerator {
           'version.ref': 'jooq',
         });
 
-        // source.applyFromGradle({ script: 'gradle/jooq.gradle' });
-        this.editFile('build.gradle', content => `${content}\napply from: "gradle/jooq.gradle"\n`);
+        source.applyFromGradle({ script: 'gradle/jooq.gradle' });
       },
     });
   }
