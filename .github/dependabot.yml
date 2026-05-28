@@ -27,11 +27,3 @@ updates:
     schedule:
       interval: 'daily'
       time: '12:00'
-  - package-ecosystem: 'gradle'
-    directory: '/generators/jooq/resources/'
-    commit-message:
-      prefix: 'fix'
-      include: 'scope'
-    schedule:
-      interval: 'daily'
-      time: '08:00'
