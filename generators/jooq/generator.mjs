@@ -82,12 +82,16 @@ export default class extends BaseApplicationGenerator {
         this.writeFiles({
           blocks: [
             {
-              templates: ['README.jooq.md', 'jooq.xml', `${TEMPLATES_MAIN_RESOURCES_DIR}config/application-jooq.yml`],
+              templates: ['README.jooq.md', `${TEMPLATES_MAIN_RESOURCES_DIR}config/application-jooq.yml`],
             },
             {
               ...javaMainPackageTemplatesBlock(),
               condition: ctx => ctx.reactive,
               templates: ['config/jOOQConfig.java'],
+            },
+            {
+              condition: ctx => ctx.buildToolMaven,
+              templates: ['jooq.xml'],
             },
             {
               condition: ctx => ctx.buildToolGradle,
