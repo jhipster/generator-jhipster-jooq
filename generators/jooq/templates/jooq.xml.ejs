@@ -2,6 +2,9 @@
   <generator>
     <target>
       <packageName><%= jooqTargetName %></packageName>
+<%_ if (buildToolGradle) { _%>
+      <directory>build/generated-src/jooq</directory>
+<%_ } _%>
     </target>
     <database>
       <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>

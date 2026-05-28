@@ -1,9 +1,5 @@
 def jooqVersion = libs.versions.jooq.get().toString()
 
-configurations {
-  jooqGenerator
-}
-
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jooq") {
     exclude group: "org.jooq", module: "*"
@@ -15,8 +11,16 @@ dependencies {
   jooqGenerator files("src/main/resources")
 }
 
-compileJava.dependsOn jooqGenerate
-
 jooq {
   configurationFile.set(file("jooq.xml"))
 }
+
+sourceSets {
+  main {
+    java {
+      srcDir 'build/generated-src/jooq'
+    }
+  }
+}
+
+compileJava.dependsOn jooqCodegen
