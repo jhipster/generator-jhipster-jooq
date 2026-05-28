@@ -82,9 +82,6 @@ exports[`SubGenerator jooq of jooq JHipster blueprint > with gradle > should suc
   "gradlew.bat": {
     "stateCleared": "modified",
   },
-  "jooq.xml": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/repository/EntityAJOOQRepository.java": {
     "stateCleared": "modified",
   },
