@@ -16,7 +16,7 @@ describe('SubGenerator server of jooq JHipster blueprint', () => {
         })
         .withJHipsterGenerators()
         .withConfiguredBlueprint()
-        .withBlueprintConfig();
+        .withBlueprintConfig({});
     });
 
     it('should succeed', () => {
