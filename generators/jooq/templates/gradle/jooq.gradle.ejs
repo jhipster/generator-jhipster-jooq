@@ -1,5 +1,9 @@
 def jooqVersion = libs.versions.jooq.get().toString()
 
+configurations {
+  jooqGenerator
+}
+
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jooq") {
     exclude group: "org.jooq", module: "*"

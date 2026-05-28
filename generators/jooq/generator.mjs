@@ -1,6 +1,5 @@
 import { TEMPLATES_MAIN_RESOURCES_DIR } from 'generator-jhipster';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
-import { getGradleLibsVersionsProperties } from 'generator-jhipster/generators/java-simple-application/generators/gradle/support';
 import { getPomVersionProperties } from 'generator-jhipster/generators/java-simple-application/generators/maven/support';
 import BaseApplicationGenerator from 'generator-jhipster/generators/spring-boot';
 
@@ -174,7 +173,7 @@ export default class extends BaseApplicationGenerator {
       injectJooqGradleConfigurations({ application, source }) {
         if (!application.buildToolGradle) return;
 
-        const { javaDependencies, jooqVersion } = application;
+        const { jooqVersion } = application;
 
         source.addGradleDependencyCatalogPlugin({
           addToBuild: true,
