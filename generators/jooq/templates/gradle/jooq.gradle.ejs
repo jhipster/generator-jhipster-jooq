@@ -5,6 +5,7 @@ dependencies {
     exclude group: "org.jooq", module: "*"
   }
 
+  implementation "org.jooq:jooq:${jooqVersion}"
   jooqGenerator "org.jooq:jooq-codegen:${jooqVersion}"
   jooqGenerator "org.jooq:jooq-meta:${jooqVersion}"
   jooqGenerator "org.jooq:jooq-meta-extensions-liquibase:${jooqVersion}"
