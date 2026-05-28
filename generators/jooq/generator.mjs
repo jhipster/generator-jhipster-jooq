@@ -1,8 +1,8 @@
 import { TEMPLATES_MAIN_RESOURCES_DIR } from 'generator-jhipster';
-import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 import { getGradleLibsVersionsProperties } from 'generator-jhipster/generators/java-simple-application/generators/gradle/support';
 import { getPomVersionProperties } from 'generator-jhipster/generators/java-simple-application/generators/maven/support';
+import BaseApplicationGenerator from 'generator-jhipster/generators/spring-boot';
 
 const groupId = 'org.jooq';
 
@@ -177,14 +177,26 @@ export default class extends BaseApplicationGenerator {
         });
       },
 
-      injectJooqGradleConfigurations({ application: { buildToolGradle, javaDependencies }, source }) {
-        if (!buildToolGradle) return;
+      injectJooqGradleConfigurations({ application, source }) {
+        if (!application.buildToolGradle) return;
 
-        source.addGradlePlugin({
+        const { javaDependencies, jooqVersion } = application;
+
+        source.addGradleDependencyCatalogPlugin({
+          addToBuild: true,
+          pluginName: 'jooq-gradle',
           id: 'nu.studer.jooq',
           version: this.blueprintConfig.jooqGradlePluginVersion ?? javaDependencies['jooq-gradle-plugin'],
         });
 
+        source.addGradleDependencyCatalogVersion({ name: 'jooq', version: jooqVersion });
+        source.addGradleDependencyCatalogLibrary({
+          libraryName: 'jooq',
+          module: 'org.jooq:jooq-bom',
+          'version.ref': 'jooq',
+        });
+
+        // source.applyFromGradle({ script: 'gradle/jooq.gradle' });
         this.editFile('build.gradle', content => `${content}\napply from: "gradle/jooq.gradle"\n`);
       },
     });
