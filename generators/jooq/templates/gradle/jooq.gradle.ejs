@@ -6,10 +6,10 @@ dependencies {
   }
 
   implementation "org.jooq:jooq:${jooqVersion}"
-  jooqGenerator "org.jooq:jooq-codegen:${jooqVersion}"
-  jooqGenerator "org.jooq:jooq-meta:${jooqVersion}"
-  jooqGenerator "org.jooq:jooq-meta-extensions-liquibase:${jooqVersion}"
-  jooqGenerator files("src/main/resources")
+  jooqCodegen "org.jooq:jooq-codegen:${jooqVersion}"
+  jooqCodegen "org.jooq:jooq-meta:${jooqVersion}"
+  jooqCodegen "org.jooq:jooq-meta-extensions-liquibase:${jooqVersion}"
+  jooqCodegen files("src/main/resources")
 }
 
 jooq {
