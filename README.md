@@ -42,7 +42,6 @@ And looking for `(blueprint option: jooq)` like
 
 ```
   --jooq-version <value>                Use jOOQ version (blueprint option: jooq)
-  --jooq-gradle-plugin-version <value>  Gradle plugin version to use (blueprint option: jooq)
   --jooq-optional                       Make jOOQ repositories optional (blueprint option: jooq)
 ```
 
