@@ -179,14 +179,14 @@ export default class extends BaseApplicationGenerator {
 
         const { jooqVersion } = application;
 
+        source.addGradleDependencyCatalogVersion({ name: 'jooq', version: jooqVersion });
         source.addGradleDependencyCatalogPlugin({
           addToBuild: true,
           pluginName: 'jooq-gradle',
           id: 'org.jooq.jooq-codegen-gradle',
-          version: jooqVersion,
+          'version.ref': 'jooq',
         });
 
-        source.addGradleDependencyCatalogVersion({ name: 'jooq', version: jooqVersion });
         source.addGradleDependencyCatalogLibrary({
           libraryName: 'jooq',
           module: 'org.jooq:jooq-bom',
