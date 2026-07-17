@@ -4,6 +4,7 @@
     "baseName": "jooq",
     "caret": true,
     "cli": true,
+    "creationTimestamp": 1784298170248,
     "defaultCommand": "generate-blueprint",
     "entities": [],
     "generators": {
@@ -22,7 +23,7 @@
     },
     "githubWorkflows": true,
     "javascriptBlueprint": true,
-    "jhipsterVersion": "9.1.0",
+    "jhipsterVersion": "9.2.0",
     "js": false,
     "localBlueprint": false,
     "packageJsonType": "module",
