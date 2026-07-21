@@ -2,18 +2,16 @@
 
 ## [4.2.0](https://github.com/jhipster/generator-jhipster-jooq/compare/v4.1.0...v4.2.0) (2026-07-21)
 
-
 ### Features
 
-* update generator-jhipster to v9.2.0 ([#101](https://github.com/jhipster/generator-jhipster-jooq/issues/101)) ([f3f7e8b](https://github.com/jhipster/generator-jhipster-jooq/commit/f3f7e8b732271a0b119e96250924c5600ecd0d61))
-
+- update generator-jhipster to v9.2.0 ([#101](https://github.com/jhipster/generator-jhipster-jooq/issues/101)) ([f3f7e8b](https://github.com/jhipster/generator-jhipster-jooq/commit/f3f7e8b732271a0b119e96250924c5600ecd0d61))
 
 ### Bug Fixes
 
-* **deps:** bump org.jooq:jooq from 3.21.4 to 3.21.5 in /generators/jooq/resources ([e7a877b](https://github.com/jhipster/generator-jhipster-jooq/commit/e7a877b09d38cd526f190f29f0096ead99a97a18))
-* **deps:** bump org.jooq:jooq from 3.21.5 to 3.21.6 in /generators/jooq/resources ([cc6892a](https://github.com/jhipster/generator-jhipster-jooq/commit/cc6892aeb8a51760c737f845887dd5f04443b987))
-* **deps:** bump org.jooq:jooq in /generators/jooq/resources ([079d197](https://github.com/jhipster/generator-jhipster-jooq/commit/079d197cbe2d45615cd372f1a24421c3110202d3))
-* **deps:** bump org.jooq:jooq in /generators/jooq/resources ([3edf939](https://github.com/jhipster/generator-jhipster-jooq/commit/3edf9393cfd25db9fba8c2bfc9b2d0c8560a668f))
+- **deps:** bump org.jooq:jooq from 3.21.4 to 3.21.5 in /generators/jooq/resources ([e7a877b](https://github.com/jhipster/generator-jhipster-jooq/commit/e7a877b09d38cd526f190f29f0096ead99a97a18))
+- **deps:** bump org.jooq:jooq from 3.21.5 to 3.21.6 in /generators/jooq/resources ([cc6892a](https://github.com/jhipster/generator-jhipster-jooq/commit/cc6892aeb8a51760c737f845887dd5f04443b987))
+- **deps:** bump org.jooq:jooq in /generators/jooq/resources ([079d197](https://github.com/jhipster/generator-jhipster-jooq/commit/079d197cbe2d45615cd372f1a24421c3110202d3))
+- **deps:** bump org.jooq:jooq in /generators/jooq/resources ([3edf939](https://github.com/jhipster/generator-jhipster-jooq/commit/3edf9393cfd25db9fba8c2bfc9b2d0c8560a668f))
 
 ## [4.1.0](https://github.com/jhipster/generator-jhipster-jooq/compare/v4.0.0...v4.1.0) (2026-05-29)
 
