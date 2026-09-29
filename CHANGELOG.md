@@ -2,15 +2,14 @@
 
 ## [4.2.1](https://github.com/jhipster/generator-jhipster-jooq/compare/v4.2.0...v4.2.1) (2026-09-29)
 
-
 ### Bug Fixes
 
-* **deps:** bump org.jooq:jooq from 3.21.6 to 3.21.7 in /generators/jooq/resources ([ce3e048](https://github.com/jhipster/generator-jhipster-jooq/commit/ce3e048dc2b0fdf16462245443980f16594fea81))
-* **deps:** bump org.jooq:jooq from 3.21.7 to 3.21.8 in /generators/jooq/resources ([36d0c8e](https://github.com/jhipster/generator-jhipster-jooq/commit/36d0c8e35d2318c9e1f983480ac04244d82dec2b))
-* **deps:** bump org.jooq:jooq from 3.21.8 to 3.21.9 in /generators/jooq/resources ([bec504b](https://github.com/jhipster/generator-jhipster-jooq/commit/bec504bedc6cea9bedef805697f1ba9c66531081))
-* **deps:** bump org.jooq:jooq in /generators/jooq/resources ([b495113](https://github.com/jhipster/generator-jhipster-jooq/commit/b49511384f24ec6a252fd1141c7c948bc51fb3e2))
-* **deps:** bump org.jooq:jooq in /generators/jooq/resources ([60ab65f](https://github.com/jhipster/generator-jhipster-jooq/commit/60ab65f36224ad2a8e4c28531e91c1c396b2d715))
-* **deps:** bump org.jooq:jooq in /generators/jooq/resources ([8117bfd](https://github.com/jhipster/generator-jhipster-jooq/commit/8117bfd6ffd9614bbfca189824ead67a8cc10dd9))
+- **deps:** bump org.jooq:jooq from 3.21.6 to 3.21.7 in /generators/jooq/resources ([ce3e048](https://github.com/jhipster/generator-jhipster-jooq/commit/ce3e048dc2b0fdf16462245443980f16594fea81))
+- **deps:** bump org.jooq:jooq from 3.21.7 to 3.21.8 in /generators/jooq/resources ([36d0c8e](https://github.com/jhipster/generator-jhipster-jooq/commit/36d0c8e35d2318c9e1f983480ac04244d82dec2b))
+- **deps:** bump org.jooq:jooq from 3.21.8 to 3.21.9 in /generators/jooq/resources ([bec504b](https://github.com/jhipster/generator-jhipster-jooq/commit/bec504bedc6cea9bedef805697f1ba9c66531081))
+- **deps:** bump org.jooq:jooq in /generators/jooq/resources ([b495113](https://github.com/jhipster/generator-jhipster-jooq/commit/b49511384f24ec6a252fd1141c7c948bc51fb3e2))
+- **deps:** bump org.jooq:jooq in /generators/jooq/resources ([60ab65f](https://github.com/jhipster/generator-jhipster-jooq/commit/60ab65f36224ad2a8e4c28531e91c1c396b2d715))
+- **deps:** bump org.jooq:jooq in /generators/jooq/resources ([8117bfd](https://github.com/jhipster/generator-jhipster-jooq/commit/8117bfd6ffd9614bbfca189824ead67a8cc10dd9))
 
 ## [4.2.0](https://github.com/jhipster/generator-jhipster-jooq/compare/v4.1.0...v4.2.0) (2026-07-21)
 
